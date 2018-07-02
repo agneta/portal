@@ -6,8 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Agneta Network Applications",
+  "license": "Apache-2.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/agneta/portal.git"
