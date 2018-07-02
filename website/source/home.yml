@@ -1,0 +1,12 @@
+template: 'home'
+title:
+  en: 'Home'
+  gr: 'Αρχική'
+
+path: '/'
+menuHide: true
+
+authorization:
+  - reviewer
+  - editor
+  - administrator

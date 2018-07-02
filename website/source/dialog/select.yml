@@ -1,0 +1,6 @@
+controller: 'AgMediaSelect'
+
+class: dialog-file-select
+
+authorization:
+  - editor

@@ -1,0 +1,13 @@
+title:
+  en: Form
+  gr: Φόρμα
+
+controller: 'AgActivityFormCtrl'
+class: "activity-form"
+
+scripts:
+  - dialog/activity-form
+
+authorization:
+  - reviewer
+  - editor

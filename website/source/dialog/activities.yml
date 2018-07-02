@@ -1,0 +1,11 @@
+title:
+  en: Activities
+
+authorization:
+  - reviewer
+  - editor
+  - administrator
+
+class: activities
+
+controller: AgActivitiesCtrl
