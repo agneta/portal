@@ -55,8 +55,6 @@ agneta.directive('AgEmailInbox', function(
   };
 
   email.reply = function() {
-    console.log(accounts.selected);
-    console.log(email.selected);
     $mdDialog.open({
       partial: 'email-compose',
       data: {

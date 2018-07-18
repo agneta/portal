@@ -25,6 +25,11 @@
 
     <div layout="row"
       layout-align="end center">
+      <md-button ng-click="email.forward()">
+        <md-icon md-svg-src="<%-get_icon('material/forward')%>">
+        </md-icon>
+        <span>Forward</span>
+      </md-button>
       <md-button ng-click="email.reply()">
         <md-icon md-svg-src="<%-get_icon('material/reply')%>">
         </md-icon>
