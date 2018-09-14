@@ -19,12 +19,13 @@ const Promise = require('bluebird');
 
 module.exports = function(util) {
   var projectPaths = util.locals.web.project.paths;
+  console.log(projectPaths);
 
   return Promise.resolve()
     .then(function() {
       return extract(util, {
         name: 'theme',
-        base: projectPaths.frontend.base,
+        base: projectPaths.app.frontend.base,
         root: projectPaths.core.platform
       });
     })
