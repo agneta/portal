@@ -18,7 +18,6 @@ const Sync = require('../transfer/files');
 const path = require('path');
 
 module.exports = function(util) {
-
   var webProject = util.locals.web.project;
   var services = util.locals.services;
   var sync = Sync(util);
@@ -26,33 +25,30 @@ module.exports = function(util) {
 
   return {
     production: function() {
-
       return sync({
         source: path.join(webProject.paths.app.build, 'production', 'public'),
         target: storageConfig.buckets.assets.production
-      })
-        .then(function() {
-          return sync({
-            source: path.join(webProject.paths.app.build, 'production', 'private'),
-            target: storageConfig.buckets.pages.production
-          });
+      }).then(function() {
+        return sync({
+          source: path.join(
+            webProject.paths.app.build,
+            'production',
+            'private'
+          ),
+          target: storageConfig.buckets.pages.production
         });
-
+      });
     },
     staging: function() {
-
       return sync({
         source: path.join(webProject.paths.app.build, 'staging', 'public'),
         target: storageConfig.buckets.assets.staging
-      })
-        .then(function() {
-          return sync({
-            source: path.join(webProject.paths.app.build, 'staging', 'private'),
-            target: storageConfig.buckets.pages.staging
-          });
-
+      }).then(function() {
+        return sync({
+          source: path.join(webProject.paths.app.build, 'staging', 'private'),
+          target: storageConfig.buckets.pages.staging
         });
-
+      });
     }
   };
 };
