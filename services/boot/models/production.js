@@ -55,7 +55,8 @@ module.exports = function(app) {
 
   var db_prd = _.extend(
     {
-      connector: 'loopback-connector-mongodb'
+      connector: 'loopback-connector-mongodb',
+      useNewUrlParser: true
     },
     appPrd.secrets.get('db')
   );
