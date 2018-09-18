@@ -22,14 +22,15 @@ module.exports = function(util, path) {
   var originalDir = process.cwd();
   process.chdir(path);
 
-  var logger = bower.commands.install();
+  var logger = bower.commands.install.line(['--force-latest']);
+
   logger.on('log', function(log) {
     //renderer.log(log);
     util.log('[bower] ' + log.id + ' ' + log.message);
   });
 
   return new Promise(function(resolve, reject) {
-    cli.getRenderer('install', logger.json, bower.config);
+    cli.getRenderer('--force-latest', logger.json, bower.config);
 
     logger.once('end', function(data) {
       resolve(data);
@@ -37,8 +38,7 @@ module.exports = function(util, path) {
     logger.once('error', function(err) {
       reject(err);
     });
-  })
-    .then(function() {
-      process.chdir(originalDir);
-    });
+  }).then(function() {
+    process.chdir(originalDir);
+  });
 };

@@ -23,8 +23,7 @@ const yaml = require('js-yaml');
 const bower = require('./bower');
 
 module.exports = function(util, dir) {
-  const projectPaths = util.locals.web.project.paths;
-  const destDir = path.join(projectPaths.app.website, 'source', 'lib');
+  const destDir = path.join(dir.base, 'source', 'lib');
 
   if (!fs.pathExistsSync(path.join(dir.root, 'bower.json'))) {
     util.log('No Bower Compoments found at ' + dir.name + ' dir.');
