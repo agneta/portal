@@ -26,7 +26,7 @@ module.exports = function(util) {
       return extract(util, {
         name: 'theme',
         base: projectPaths.app.frontend.base,
-        root: projectPaths.core.platform
+        root: projectPaths.app.frontend.base
       });
     })
     .then(function() {
