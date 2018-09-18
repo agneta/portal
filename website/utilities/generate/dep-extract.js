@@ -14,15 +14,17 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
-var glob = require('glob');
-var path = require('path');
-var _ = require('lodash');
-var fs = require('fs-extra');
-var Promise = require('bluebird');
-var yaml = require('js-yaml');
-var bower = require('./bower');
+const glob = require('glob');
+const path = require('path');
+const _ = require('lodash');
+const fs = require('fs-extra');
+const Promise = require('bluebird');
+const yaml = require('js-yaml');
+const bower = require('./bower');
 
 module.exports = function(util, dir) {
+  const projectPaths = util.locals.web.project.paths;
+  const destDir = path.join(projectPaths.app.website, 'source', 'lib');
 
   if (!fs.pathExistsSync(path.join(dir.root, 'bower.json'))) {
     util.log('No Bower Compoments found at ' + dir.name + ' dir.');
@@ -31,9 +33,7 @@ module.exports = function(util, dir) {
 
   //-----------------------------------------------------------------
 
-  var ignoreDefault = [
-    'src/**'
-  ];
+  var ignoreDefault = ['src/**'];
 
   var libs = [];
   var totalFiles = 0;
@@ -54,24 +54,16 @@ module.exports = function(util, dir) {
       return bower(util, dir.root);
     })
     .then(function() {
-
-      return fs.readFile(
-        path.join(dir.base, 'config.yml'),
-        'utf8'
-      );
-
+      return fs.readFile(path.join(dir.base, 'config.yml'), 'utf8');
     })
     .then(function(content) {
       var config = yaml.safeLoad(content);
       rules = config.libraries || {};
 
       return fs.readdir(dir.modules);
-
     })
     .then(function(libraries) {
-
       return Promise.map(libraries, function(library) {
-
         var rule = rules[library] || {};
         var searchDir = path.join(dir.modules, library);
 
@@ -98,7 +90,6 @@ module.exports = function(util, dir) {
         var moduleFiles = [];
 
         return Promise.map(rule.include, function(include) {
-
           return Promise.promisify(glob)(include || '*.min.{js,css}', {
             cwd: searchDir,
             ignore: ignore,
@@ -106,85 +97,82 @@ module.exports = function(util, dir) {
             nosort: true,
             matchBase: true,
             stat: false
-          })
-            .then(function(result) {
-              moduleFiles = moduleFiles.concat(result);
-            });
-
-        })
-          .then(function() {
-
-            moduleFiles = _.uniq(moduleFiles);
-
-            if (!moduleFiles.length) {
-              util.log('No files found for library: ' + library);
-              return;
-            }
-            util.log(`Found ${moduleFiles.length} files for library: ${library}`);
-
-            totalFiles += moduleFiles.length;
-
-            libs.push({
-              dir: searchDir,
-              files: moduleFiles
-            });
+          }).then(function(result) {
+            moduleFiles = moduleFiles.concat(result);
           });
-      });
+        }).then(function() {
+          moduleFiles = _.uniq(moduleFiles);
 
+          if (!moduleFiles.length) {
+            util.log('No files found for library: ' + library);
+            return;
+          }
+          util.log(`Found ${moduleFiles.length} files for library: ${library}`);
+
+          totalFiles += moduleFiles.length;
+
+          libs.push({
+            dir: searchDir,
+            files: moduleFiles
+          });
+        });
+      });
     })
     .then(function() {
-
       var bar = util.progress(totalFiles, {
         title: 'Dependencies for ' + dir.name
       });
 
-      return Promise.map(libs, function(lib) {
+      return Promise.map(
+        libs,
+        function(lib) {
+          var parsedDir = path.parse(lib.dir);
+          var rule = rules[parsedDir.name] || {};
 
-        var parsedDir = path.parse(lib.dir);
-        var rule = rules[parsedDir.name] || {};
+          return Promise.map(
+            lib.files,
+            function(file) {
+              var parsed = path.parse(file);
 
-        return Promise.map(lib.files, function(file) {
+              var sourcePath = path.join(lib.dir, file);
+              var destPath = path.join(destDir, rule.dir || '', parsed.base);
 
-          var parsed = path.parse(file);
-
-          var sourcePath = path.join(lib.dir, file);
-          var destPath = path.join(
-            dir.base, 'source', 'lib',
-            rule.dir || '',
-            parsed.base);
-
-          return fs.copy(sourcePath, destPath)
-            .then(function() {
-              var parsedPath = path.parse(sourcePath);
-              var parsed = path.parse(parsedPath.name);
-              var pathCheck = path.join(parsedPath.dir, parsed.name) + parsedPath.ext;
-              if (parsed.ext == '.min') {
-                return fs.pathExists(pathCheck)
-                  .then(function(exists) {
-                    if (exists) {
-                      var parsed = path.parse(pathCheck);
-                      var pathCheckOut = path.join(
-                        dir.base, 'source', 'lib',
-                        rule.dir || '',
-                        parsed.base);
-                      fs.copy(pathCheck, pathCheckOut);
-                    }
+              return fs
+                .copy(sourcePath, destPath)
+                .then(function() {
+                  var parsedPath = path.parse(sourcePath);
+                  var parsed = path.parse(parsedPath.name);
+                  var pathCheck =
+                    path.join(parsedPath.dir, parsed.name) + parsedPath.ext;
+                  if (parsed.ext == '.min') {
+                    return fs.pathExists(pathCheck).then(function(exists) {
+                      if (exists) {
+                        var parsed = path.parse(pathCheck);
+                        var pathCheckOut = path.join(
+                          destDir,
+                          rule.dir || '',
+                          parsed.base
+                        );
+                        fs.copy(pathCheck, pathCheckOut);
+                      }
+                    });
+                  }
+                })
+                .then(function() {
+                  bar.tick({
+                    title: path.join(rule.dir || '', parsed.base)
                   });
-              }
-            })
-            .then(function() {
-              bar.tick({
-                title: path.join(rule.dir || '', parsed.base)
-              });
-            });
-
-        }, {
-          concurrency: 3
-        });
-
-      }, {
-        concurrency: 1
-      });
+                });
+            },
+            {
+              concurrency: 3
+            }
+          );
+        },
+        {
+          concurrency: 1
+        }
+      );
     })
     .then(function() {
       if (totalFiles) {

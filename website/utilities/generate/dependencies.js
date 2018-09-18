@@ -19,7 +19,6 @@ const Promise = require('bluebird');
 
 module.exports = function(util) {
   var projectPaths = util.locals.web.project.paths;
-  console.log(projectPaths);
 
   return Promise.resolve()
     .then(function() {
