@@ -15,18 +15,17 @@
  *   limitations under the License.
  */
 module.exports = function(util) {
+  var media = require('./media')(util);
 
   return function(options) {
+    console.log(options);
 
     if (options.target != 'production') {
       return;
     }
 
-    return Promise.resolve()
-      .then(function() {
-        return require('./media')(util,options);
-      });
-
+    return Promise.resolve().then(function() {
+      return media(options);
+    });
   };
-
 };

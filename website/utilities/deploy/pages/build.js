@@ -19,7 +19,7 @@ const path = require('path');
 
 module.exports = function(util) {
   var webProject = util.locals.web.project;
-  var services = util.locals.services;
+  var services = util.locals.web.services;
   var sync = Sync(util);
   var storageConfig = services.get('storage');
 

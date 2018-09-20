@@ -17,13 +17,11 @@
 const SyncBuckets = require('../transfer/buckets');
 
 module.exports = function(util) {
-
-  var services = util.locals.services;
+  var services = util.locals.web.services;
   var syncBuckets = SyncBuckets(util);
   var storageConfig = services.get('storage');
 
   return function(options) {
-
     if (!options.promote.media) {
       return;
     }
