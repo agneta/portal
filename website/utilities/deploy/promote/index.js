@@ -18,7 +18,9 @@ module.exports = function(util) {
   var media = require('./media')(util);
 
   return function(options) {
-    console.log(options);
+    if (!options.promote) {
+      return;
+    }
 
     if (options.target != 'production') {
       return;
