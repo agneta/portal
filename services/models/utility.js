@@ -20,13 +20,10 @@ const _ = require('lodash');
 const util = require('util');
 
 module.exports = function(Model, app) {
-
   Model.io = app.socket.namespace({
     name: 'utilities',
     auth: {
-      allow: [
-        'administrator'
-      ]
+      allow: ['administrator']
     }
   });
 
@@ -34,15 +31,10 @@ module.exports = function(Model, app) {
   var project = locals.project;
 
   for (var key in project.utilities) {
-
-    initUtility(
-      project.utilities[key]
-    );
-
+    initUtility(project.utilities[key]);
   }
 
   function initUtility(utility) {
-
     var instance = utility.runner({
       locals: locals,
       app: app,
@@ -52,7 +44,7 @@ module.exports = function(Model, app) {
           arguments: arguments
         });
       },
-      error: function(){
+      error: function() {
         utility.addLine({
           type: 'error',
           arguments: arguments
@@ -65,51 +57,52 @@ module.exports = function(Model, app) {
         });
       },
       progress: function(length, options) {
-
         var id = shortid.generate();
 
-        var progressOptions = _.extend({
-          id: id,
-          length: length,
-          count: 0
-        },options);
+        var progressOptions = _.extend(
+          {
+            id: id,
+            length: length,
+            count: 0
+          },
+          options
+        );
 
         var canEmit = true;
 
-        function emit(options){
-          if(!canEmit && progressOptions.count<length){
+        function emit(options) {
+          if (!canEmit && progressOptions.count < length) {
             return;
           }
 
-          setTimeout(function () {
+          setTimeout(function() {
             canEmit = true;
           }, 100);
           canEmit = false;
 
           options = options || {};
 
-          progressOptions.value = (progressOptions.count/progressOptions.length).toFixed(2) * 100;
+          progressOptions.value =
+            (progressOptions.count / progressOptions.length).toFixed(2) * 100;
           progressOptions.current = options;
 
-          if(progressOptions.count==length){
+          if (progressOptions.count == length) {
             options.title = 'Complete';
             progressOptions.compete = true;
           }
 
-          utility.emit('progress:update',progressOptions);
+          utility.emit('progress:update', progressOptions);
         }
 
         return {
-          emit: function(progress,options){
+          emit: function(progress, options) {
             progressOptions.length = progress.length;
             progressOptions.count = progress.count;
             emit(options);
           },
           tick: function(options) {
-
             progressOptions.count++;
             emit(options);
-
           },
           addLength: function(length) {
             progressOptions.length += length;
@@ -127,12 +120,10 @@ module.exports = function(Model, app) {
     };
 
     utility.addLine = function(options) {
-
-
       if (options.arguments) {
         var args = Array.prototype.slice.call(options.arguments);
-        for(var index in args){
-          args[index] = util.inspect(args[index],{depth:4});
+        for (var index in args) {
+          args[index] = util.inspect(args[index], { depth: 4 });
         }
         options.message = args.join(' ');
       }
@@ -144,7 +135,6 @@ module.exports = function(Model, app) {
     };
 
     utility.emit('status', instance.status);
-
   }
 
   Model.getUtility = function(name) {
@@ -158,11 +148,8 @@ module.exports = function(Model, app) {
     }
 
     return Promise.resolve(utility);
-
   };
 
   require('./utility/state')(Model, app);
   require('./utility/start')(Model, app);
-
-
 };
