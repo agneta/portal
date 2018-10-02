@@ -19,6 +19,7 @@ const diff = require('deep-diff').diff;
 const yaml = require('js-yaml');
 const path = require('path');
 const fs = require('fs-extra');
+const Promise = require('bluebird');
 
 module.exports = function(Model, app) {
   var clientHelpers = app.client.app.locals;
@@ -54,7 +55,7 @@ module.exports = function(Model, app) {
           });
         }
 
-        var writableFields = [];
+        var writableFields = ['skip'];
         for (let field of templateData.fields) {
           if (field.readonly) {
             continue;
@@ -66,8 +67,7 @@ module.exports = function(Model, app) {
         }
 
         data = clientHelpers.get_values(data);
-        data = _.pick(data, templateData.fieldNames);
-        data = _.pick(data, writableFields);
+        data = _.pick(data, templateData.fieldNames.concat(writableFields));
 
         if (model.validateData) {
           // Important to alter data before saved into database so that the diff behaves properly
@@ -99,6 +99,8 @@ module.exports = function(Model, app) {
         });
       })
       .then(function() {
+        console.log(templateData);
+
         let pages = templateData.pages || [];
         if (!templateData.page) {
           pages.push(templateData.page);
@@ -111,9 +113,12 @@ module.exports = function(Model, app) {
           return;
         }
 
-        let fields = ['title', 'cover', 'name', 'description'];
+        let fields = ['title', 'cover', 'name', 'description', 'skip'];
 
         return Promise.map(pages, function(page) {
+          if (!page) {
+            return;
+          }
           if (page.fields) {
             fields = fields.concat(page.fields);
           }

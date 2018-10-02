@@ -3,12 +3,13 @@ title:
   gr: Δεδομένα Διαδικτύου
 description:
   en: "Edit your project's remote data while they are updated in your database"
-icon: 'material/cloud-queue'
+icon: "material/cloud-queue"
 
 template: editor
 
-controller: 'AgEditDataRemote'
+controller: "AgEditDataRemote"
 
 editor:
   main: false
-  toolbar: edit/data-remote/toolbar
+  page:
+    if: "template.isPage"

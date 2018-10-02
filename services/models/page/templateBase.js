@@ -15,27 +15,28 @@
  *   limitations under the License.
  */
 
-module.exports = [{
-  name: 'title',
-  validators: {
-    required: true
+module.exports = [
+  {
+    name: 'title',
+    validators: {
+      required: true
+    },
+    title: {
+      en: 'Title',
+      gr: 'Τίτλος'
+    },
+    type: 'text-single'
   },
-  title: {
-    en: 'Title',
-    gr: 'Τίτλος'
+  {
+    name: 'description',
+    validators: {
+      required: true
+    },
+    title: {
+      en: 'Description',
+      gr: 'Περιγραφή'
+    },
+    type: 'text'
   },
-  type: 'text-single'
-},
-{
-  name: 'description',
-  validators: {
-    required: true
-  },
-  title: {
-    en: 'Description',
-    gr: 'Περιγραφή'
-  },
-  type: 'text'
-},
-'cover'
+  'cover'
 ];

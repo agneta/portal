@@ -1,0 +1,51 @@
+<%
+    var editor = page.editor || {};
+%>
+
+<div layout="row"
+    class="heading"
+    layout="start center"
+    layout-margin>
+    <%if(editor.toolbar){%>
+    <%-template(editor.toolbar)%>
+    <%}%>
+    <span flex></span>
+
+    <md-button ng-click="save()"
+        class="md-primary">
+        <md-icon md-svg-src="<%-get_icon('material/save')%>"></md-icon>
+        <span>Save</span>
+    </md-button>
+
+    <md-button ng-click="pageDelete()"
+        class="md-warn">
+        <md-icon md-svg-icon="<%-get_icon('material/delete')%>"></md-icon>
+        <span>Delete</span>
+    </md-button>
+
+    <md-button class="md-primary"
+        aria-label="Switch Source"
+        ng-click="openSource()">
+        Source
+    </md-button>
+
+</div>
+
+<div layout="row">
+    <%if(editor.page){
+        var ngIf = '';
+        if(editor.page.if){
+            ngIf = `ng-if="${editor.page.if}"`
+        }
+        %>
+
+    <md-button>
+        Publish
+    </md-button>
+
+    <md-switch <%-ngIf%> ng-model="page.data.skip" >
+        Draft
+    </md-switch>
+    <%}%>
+
+</div>
