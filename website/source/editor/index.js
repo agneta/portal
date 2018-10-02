@@ -66,7 +66,7 @@ agneta.directive('AgEditMainCtrl', function(
 
   require('./field-state.module')(vm, helpers);
   require('./templates.module')(shared);
-  require('./content.module')(vm, helpers);
+  require('./content/fields')(vm, helpers);
   require('./route.module')(shared);
   require('./media.module')(shared);
   require('./relation.module')(shared);
