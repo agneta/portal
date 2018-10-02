@@ -5,7 +5,7 @@ description:
   en: "Edit your project's local data and commit your changes to a GIT repository"
 icon: 'material/view-headline'
 
-template: edit/content
+template: editor
 controller: 'AgEditDataLocal'
 
 editor:

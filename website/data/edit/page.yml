@@ -19,7 +19,7 @@ fields:
 tabs:
   name: tool
   default: list
-  location: edit/content/sidebar
+  location: editor/sidebar
   list:
     -
       title:

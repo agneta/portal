@@ -5,7 +5,7 @@ description:
   en: "Edit your project's remote data while they are updated in your database"
 icon: 'material/cloud-queue'
 
-template: edit/content
+template: editor
 
 controller: 'AgEditDataRemote'
 

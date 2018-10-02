@@ -1,0 +1,49 @@
+<div layout="column"
+    class="page-main"
+    ng-class="{active:page}">
+
+    <div layout="row"
+        class="heading"
+        layout="start center"
+        layout-margin>
+        <%if(page.editor&&page.editor.toolbar){%>
+        <%-template(page.editor.toolbar)%>
+        <%}%>
+        <span flex></span>
+
+        <md-button ng-click="save()"
+            class="md-primary">
+            <md-icon md-svg-src="<%-get_icon('material/save')%>"></md-icon>
+            <span>Save</span>
+        </md-button>
+
+        <md-button ng-click="pageDelete()"
+            class="md-warn">
+            <md-icon md-svg-icon="<%-get_icon('material/delete')%>"></md-icon>
+            <span>Delete</span>
+        </md-button>
+
+        <md-button class="md-primary"
+            aria-label="Switch Source"
+            ng-click="openSource()">
+            Source
+        </md-button>
+
+    </div>
+
+    <div class="edit-gui"
+        ng-show="!sourceEnabled">
+        <div class="general-info">
+            <div ng-if="page.path"
+                layout="row"
+                layout-align="start center">
+                <label>Path:</label>
+                <p class="path">{{page.path}}</p>
+                <span flex="auto"></span>
+            </div>
+        </div>
+        <%-template('editor/content/data')%>
+        <%-template('editor/content/fields')%>
+    </div>
+
+</div>

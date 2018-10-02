@@ -21,12 +21,10 @@ const path = require('path');
 const fs = require('fs-extra');
 
 module.exports = function(Model, app) {
-
   var clientHelpers = app.client.app.locals;
   var webProject = app.web.project;
 
   Model.save = function(id, template, data, req) {
-
     var templateData;
     var model;
     var item;
@@ -57,11 +55,11 @@ module.exports = function(Model, app) {
         }
 
         var writableFields = [];
-        for(let field of templateData.fields){
-          if(field.readonly){
+        for (let field of templateData.fields) {
+          if (field.readonly) {
             continue;
           }
-          if(field.readOnly){
+          if (field.readOnly) {
             continue;
           }
           writableFields.push(field.name);
@@ -71,112 +69,124 @@ module.exports = function(Model, app) {
         data = _.pick(data, templateData.fieldNames);
         data = _.pick(data, writableFields);
 
-        if(model.validateData){
+        if (model.validateData) {
           // Important to alter data before saved into database so that the diff behaves properly
           return model.validateData(data);
         }
-
       })
       .then(function() {
-
         var differences = diff(
           _.pick(item.__data, templateData.fieldNames),
           data
         );
 
-        if(!differences){
+        if (!differences) {
           return;
         }
-        if(!differences.length){
+        if (!differences.length) {
           return;
         }
         //console.log(data);
 
-        return item.updateAttributes(data)
-          .then(function(item) {
-            return app.models.History.add({
-              model: model,
-              data: data,
-              id: item.id,
-              diff: differences,
-              req: req
-            });
+        return item.updateAttributes(data).then(function(item) {
+          return app.models.History.add({
+            model: model,
+            data: data,
+            id: item.id,
+            diff: differences,
+            req: req
           });
+        });
       })
       .then(function() {
-
-        if(!templateData.page){
+        let pages = templateData.pages || [];
+        if (!templateData.page) {
+          pages.push(templateData.page);
+        }
+        if (!pages.length) {
           return;
         }
-        if(!_.isString(data.name)){
+
+        if (!_.isString(data.name)) {
           return;
         }
-        var fields = ['title','cover','name','description'];
 
-        if(templateData.page.fields){
-          fields = fields.concat(templateData.page.fields);
-        }
+        let fields = ['title', 'cover', 'name', 'description'];
 
-        var pageData = _.pick(data,fields);
-        pageData = _.extend({},pageData,templateData.page.data);
+        return Promise.map(pages, function(page) {
+          if (page.fields) {
+            fields = fields.concat(page.fields);
+          }
 
-        if(pageData.path){
-          pageData.path = _.template(pageData.path)({
+          var pageData = _.pick(data, fields);
+          pageData = _.extend({}, pageData, page.data);
+
+          if (pageData.path) {
+            pageData.path = template(pageData.path);
+          }
+
+          if (page.viewData) {
+            pageData.viewData = _.pick(
+              _.extend(
+                {
+                  id: id
+                },
+                data
+              ),
+              page.viewData
+            );
+          }
+
+          var content = yaml.safeDump(pageData);
+          var outputPath =
+            path.join(webProject.paths.app.source, template(page.location)) +
+            '.yml';
+
+          return fs.outputFile(outputPath, content);
+        });
+
+        function template(content) {
+          return _.template(content)({
             page: data
           });
         }
-
-        if(templateData.page.viewData){
-          pageData.viewData = _.pick(
-            _.extend({
-              id: id
-            },data),
-            templateData.page.viewData);
-        }
-
-        var content = yaml.safeDump(pageData);
-        var outputPath = path.join(
-          webProject.paths.app.source,
-          templateData.page.location,
-          data.name
-        )+'.yml';
-        return fs.outputFile(outputPath, content);
       });
-
   };
 
-  Model.remoteMethod(
-    'save', {
-      description: 'Save project data',
-      accepts: [{
+  Model.remoteMethod('save', {
+    description: 'Save project data',
+    accepts: [
+      {
         arg: 'id',
         type: 'string',
         required: true
-      }, {
+      },
+      {
         arg: 'template',
         type: 'string',
         required: true
-      }, {
+      },
+      {
         arg: 'data',
         type: 'object',
         required: true
-      }, {
+      },
+      {
         arg: 'req',
         type: 'object',
-        'http': {
+        http: {
           source: 'req'
         }
-      }],
-      returns: {
-        arg: 'result',
-        type: 'object',
-        root: true
-      },
-      http: {
-        verb: 'post',
-        path: '/save'
-      },
+      }
+    ],
+    returns: {
+      arg: 'result',
+      type: 'object',
+      root: true
+    },
+    http: {
+      verb: 'post',
+      path: '/save'
     }
-  );
-
+  });
 };

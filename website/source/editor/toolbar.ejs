@@ -1,0 +1,56 @@
+<div layout="row"
+    class="top-bar ag-margin"
+    layout="start center">
+
+    <md-button ng-click="pageAdd()"
+        ng-show="template"
+        class="md-primary">
+        <md-icon md-svg-icon="<%-get_icon('material/add')%>"></md-icon>
+        <span>New</span>
+    </md-button>
+
+    <md-button ng-click="push()"
+        class="md-primary">
+        <md-icon md-svg-src="<%-get_icon('material/file-upload')%>"></md-icon>
+        <span>Push</span>
+    </md-button>
+
+    <span flex></span>
+
+    <md-select md-offset="0 80"
+        ng-model="edit.lang"
+        placeholder="Language"
+        class="md-no-underline">
+        <%for(var language of config.languages){%>
+        <md-option value="<%-language.key%>">
+            <%-language.value%>
+        </md-option>
+        <%}%>
+    </md-select>
+
+    <md-button aria-label="Refresh"
+        class="md-icon-button"
+        ng-click="getPage()">
+        <md-icon md-svg-src="<%-get_icon('material/refresh')%>"></md-icon>
+    </md-button>
+
+    <md-menu class="settings"
+        md-offset="0 40">
+        <md-button aria-label="Open editing settings"
+            class="md-icon-button"
+            ng-click="$mdMenu.open()">
+            <md-icon md-menu-origin
+                md-svg-src="<%-get_icon('material/settings')%>"></md-icon>
+        </md-button>
+        <md-menu-content width="4"
+            class="md-padding">
+            <md-menu-item>
+                <md-checkbox ng-model="edit.realtime"
+                    aria-label="Enable Real-time">
+                    Real-time updates (beta)
+                </md-checkbox>
+            </md-menu-item>
+        </md-menu-content>
+    </md-menu>
+
+</div>
