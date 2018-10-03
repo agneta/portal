@@ -1,6 +1,29 @@
 <%
 var fields = get_data('edit/page').fields.standard;
-for(var field of fields){%>
-  <div <%-locals.attr%> ng-if="field.type == '<%-field%>'" ng-include="'field-standard-<%-field%>.html'">
+for(var field of fields){
+  var ngIf = `ng-if="field.type == '${field}'"`;
+  var ngInclude = `ng-include="'field-standard-${field}.html'"`;
+%>
+<div <%-ngIf%>
+  >
+  <div <%-ngInclude%>
+    ng-class="{'ng-hide':data.__hidden}"
+    <%-locals.attr%>></div>
+
+  <div class="show-toggle"
+    layout="row"
+    layout-align="center"
+    ng-click="data.__hidden=false"
+    ng-show="data.__hidden">
+    <md-icon md-svg-src="<%-get_icon('material/keyboard-arrow-down')%>"></md-icon>
   </div>
+  <div class="show-toggle"
+    layout="row"
+    layout-align="center"
+    ng-click="data.__hidden=true"
+    ng-hide="data.__hidden">
+    <md-icon md-svg-src="<%-get_icon('material/keyboard-arrow-up')%>"></md-icon>
+  </div>
+
+</div>
 <%}%>

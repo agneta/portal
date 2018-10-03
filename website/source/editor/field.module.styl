@@ -1,135 +1,151 @@
-.data-node{
-
-  &:empty{
+.data-node {
+  &:empty {
     display: none;
   }
-  &.readonly{
-    mdp-date-picker, mdp-time-picker, input, select, md-input-container{
+
+  &.readonly {
+    mdp-date-picker, mdp-time-picker, input, select, md-input-container {
       opacity: 0.8;
       pointer-events: none;
     }
   }
 
-  .header{
+  &.contracted {
+    >div>button.expander {
+      transform: rotateZ(180deg);
+    }
+  }
+
+  .show-toggle {
+    background: whitesmoke;
+  }
+
+  .header {
     min-height: 35px;
     box-sizing: content-box;
   }
-  .label-icon{
+
+  .label-icon {
     margin-right: 3px;
   }
 
-  .add-value-row{
+  .add-value-row {
     margin: 20px 0;
   }
 
-  .ql-editor{
-    &.ql-blank{
-      &:before{
+  .ql-editor {
+    &.ql-blank {
+      &:before {
         color: rgba(255, 255, 255, 0.6);
       }
     }
   }
 
-  .field{
-
-    &.text{
+  .field {
+    &.text {
       padding: 10px;
       box-sizing: border-box;
     }
-    &.object{
 
-      >div{
+    &.object {
+      >div {
         padding: 4px 7px;
       }
-      >div:nth-child(even){
+
+      >div:nth-child(even) {
         background: rgb(250, 250, 250);
       }
     }
-    &.array{
-      >div>.array-cont>div>.array{
+
+    &.array {
+      >div>.array-cont>div>.array {
         margin: 10px;
       }
     }
-    &.relation-hasMany{
-      .item{
+
+    &.relation-hasMany {
+      .item {
         background: whitesmoke;
         padding: 10px;
         border-radius: 4px;
         cursor: pointer;
       }
     }
-    &.media{
+
+    &.media {
       padding: 10px;
 
-      .empty{
+      .empty {
         text-align: center;
         cursor: pointer;
 
-        .intro{
+        .intro {
           color: color-primary;
           font-weight: bold;
           font-size: 18px;
         }
-        .description{
+
+        .description {
           margin-bottom: 15px;
         }
 
-        md-icon{
+        md-icon {
           margin-top: 5px;
           color: color-primary;
           width: 50px;
           height: 50px;
         }
-
       }
     }
   }
-  .media-value{
+
+  .media-value {
     min-height: 138px;
 
-    .thumbnail{
+    .thumbnail {
       margin-right: 14px;
       width: 152px;
       border-radius: 4px;
       background-position: center;
       background-size: cover;
 
-      md-icon{
+      md-icon {
         width: 60%;
         height: 60%;
         color: color-primary;
       }
     }
-    .title{
+
+    .title {
       font-size: 16px;
       color: #545454;
     }
   }
 }
 
-.data-field{
-
-  div[data-as-sortable]{
+.data-field {
+  div[data-as-sortable] {
     position: relative;
   }
 
-  .data-node{
+  .data-node {
     position: relative;
 
-    .array{
+    .array {
       border-radius: 4px;
       overflow: hidden;
       border: solid 1px #c5c5c5;
       padding: 4px 12px;
     }
 
-    [data-as-sortable-item-handle]{
+    [data-as-sortable-item-handle] {
       font-weight: bold;
     }
 
-    .excerpt{
+    .excerpt {
       overflow: hidden;
-      span{
+
+      span {
         white-space: nowrap;
         text-overflow: ellipsis;
         width: 100%;
@@ -137,11 +153,11 @@
       }
     }
 
-    .highlight{
+    .highlight {
       color: #535353;
       padding: 8px;
 
-      >label{
+      >label {
         font-weight: bold;
         margin-right: 4px;
         width: 200px;
@@ -150,28 +166,18 @@
         white-space: nowrap;
       }
 
-      md-icon{
+      md-icon {
         cursor: pointer;
       }
     }
 
-    .expander{
+    .expander {
       transition: transform 400ms;
       box-shadow: none !important;
     }
-    &.contracted{
-      .array-cont{
-        display: none;
-      }
 
-      .expander{
-        transform: rotateZ(180deg);
-      }
-    }
-
-    .data-node{
-
-      .index{
+    .data-node {
+      .index {
         display: block;
         text-align: center;
         line-height: 26px;
@@ -182,12 +188,12 @@
         content: '';
       }
 
-      [data-as-sortable-item-handle]{
+      [data-as-sortable-item-handle] {
         font-weight: normal;
       }
     }
 
-    >.index{
+    >.index {
       display: none;
     }
   }

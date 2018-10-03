@@ -1,6 +1,14 @@
 <div ng-form="dataForm"
     ng-if="page.data"
-    class="md-padding page-data">
+    ng-init="data=page.data"
+    ng-class="{contracted:data._expanded}"
+    class="md-padding data-node page-data">
+
+    <div layout="row"
+        layout-align="end">
+        <%-template('editor/expander')%>
+    </div>
+
     <div ng-repeat="field in template.fields"
         ng-if="page.data[field.name]"
         ng-init="key=field.name;data=page.data[key];parent=page.data;"
@@ -16,7 +24,7 @@
             <%-template('editor/contributors')%>
         </div>
 
-        <%-template('editor/fields-standard',{attr:'class="data-field"'})%>
+        <%-template('editor/fields-standard',{attr:'class="data-field page-field-cont"'})%>
 
     </div>
     <div layout="row">

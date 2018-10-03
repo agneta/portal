@@ -1,53 +1,55 @@
-.edit-gui{
-
+.edit-gui {
   padding: 20px 10px;
   width: 1000px;
   max-width: 95%;
   margin: auto;
 
-  .general-info{
-    label{
+  .general-info {
+    label {
       margin-right: 10px;
       font-weight: bold;
     }
   }
 
-  .page-data{
-
+  .page-data {
     background: white;
     border-radius: 10px;
 
-    .heading{
+    .heading {
       background: color-grey;
-      md-icon{
+
+      md-icon {
         margin-right: 10px;
       }
-      .title{
+
+      .title {
         font-size: 1.2em;
       }
     }
 
-    >.data-node{
+    >.data-node {
       border-bottom: solid 1px #e0dede;
       padding-bottom: 10px;
       margin-bottom: 10px;
 
-      &:last-child{
+      &:last-child {
         border-bottom: none;
         padding-bottom: 0;
         margin-bottom: 0;
       }
     }
 
-    .data-node{
-      .header{
-        .field-label{
+    .data-node {
+      .header {
+        .field-label {
           font-weight: bold;
           width: 150px;
-          md-icon{
+
+          md-icon {
             margin: 0;
           }
-          span{
+
+          span {
             color: grey;
             font-size: 0.85em;
           }
@@ -55,36 +57,37 @@
       }
     }
 
-    .md-input, .ql-editor{
+    .md-input, .ql-editor {
       padding: 20px 10px;
-      border: none
+      border: none;
       background: #5d5d5d;
       color: #fff;
       border-radius: 2px;
-      &::placeholder{
+
+      &::placeholder {
         color: #fff9;
       }
     }
 
-    md-input-container{
+    md-input-container {
       width: 100%;
       margin: 0;
 
-      &.select{
+      &.select {
         width: initial;
       }
 
-      &.has-postfix{
-        .md-input{
+      &.has-postfix {
+        .md-input {
           padding-right: 60px;
         }
       }
 
-      .md-errors-spacer{
+      .md-errors-spacer {
         display: none;
       }
 
-      .postfix{
+      .postfix {
         position: absolute;
         right: 10px;
         color: white;
@@ -93,19 +96,18 @@
         line-height: 40px;
       }
 
-      label{
+      label {
         display: none;
       }
     }
 
-    .type-boolean{
+    .type-boolean {
       margin: 0;
     }
 
-    .delete{
+    .delete {
       cursor: pointer;
       color: color-red;
     }
-
   }
 }
