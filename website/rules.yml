@@ -1,59 +1,51 @@
--
-  data:
+- data:
     noHeader: true
-    controller: 'AgUtilityCtrl'
+    controller: "AgUtilityCtrl"
     scripts:
-      - 'utility'
-      - 'lib/bluebird.min'
+      - "utility"
+      - "lib/bluebird.min"
   templates:
     - "utility"
--
-  data:
+- data:
     scripts:
-      -
-        path: 'lib/quill.min'
+      - path: "lib/quill.min"
         priority: 0
-      - 'lib/js-yaml.min'
-      - 'lib/lodash.min'
-      -
-        path: 'lib/moment/moment.min'
+      - "lib/js-yaml.min"
+      - "lib/lodash.min"
+      - path: "lib/moment/moment.min"
         priority: 0
-      - 'editor'
-      - 'lib/mdPickers.min'
+      - "editor"
+      - "lib/mdPickers.min"
       - lib/ng-quill
       - lib/ng-sortable.min
       - lib/angular-moment.min
-      - 'lib/fuse.min'
+      - "lib/fuse.min"
     styles:
-      - 'lib/quill.snow'
-      - 'lib/ng-sortable.min'
-      - 'lib/mdPickers.min'
-      - 'editor'
+      - "lib/quill.snow"
+      - "lib/ng-sortable.min"
+      - "lib/mdPickers.min"
+      - "editor"
     keypress: true
     menuLock: true
     sidebar: editor/sidebar/main
-    class: 'page-editor'
+    class: "page-editor"
     authorization:
       - administrator
       - editor
   templates:
-    - 'editor'
--
-  data:
+    - "editor"
+- data:
     menuLock: true
   templates:
     - "docs"
--
-  data:
+- data:
     scripts:
-      - 'lib/moment/el'
-      - 'moment.extend'
-      -
-        path: 'lib/moment/moment.min'
+      - "lib/moment/el"
+      - "moment.extend"
+      - path: "lib/moment/moment.min"
         priority: 0
     angular_libs:
-      -
-        js: lib/angular-moment.min
+      - js: lib/angular-moment.min
         dep: angularMoment
   templates:
     - "manager"
@@ -61,66 +53,59 @@
     - "manager/history"
     - "system/server"
     - "email/inbox"
--
-  data:
+- data:
     scripts:
-      - 'media/preview'
+      - "media/preview"
   templates:
-    - 'editor'
-    - 'dialog/email-compose'
--
-  data:
+    - "editor"
+    - "dialog/email-compose"
+- data:
     angular_libs:
-      -
-        priority: 0
-        js: 'lib/ng-file-upload.min'
-        dep: 'ngFileUpload'
+      - priority: 0
+        js: "lib/ng-file-upload.min"
+        dep: "ngFileUpload"
     scripts:
-      - 'media/explorer'
-      - 'media/preview'
-      - 'lib/fuse.min'
+      - "media/explorer"
+      - "media/preview"
+      - "lib/fuse.min"
     styles:
-      - 'media/explorer'
+      - "media/explorer"
   templates:
-    - 'dialog/select'
+    - "dialog/select"
+    - "dialog/file"
     - edit/media/main
--
-  data:
+- data:
     authorization:
       - administrator
       - editor
   templates:
     - docs
     - doc
--
-  data:
+- data:
     controller: AgAccountAddCert
     class: account-cert
     form: cert-add
     angular_libs:
-      -
-        js: 'lib/ng-file-upload.min'
-        dep: 'ngFileUpload'
+      - js: "lib/ng-file-upload.min"
+        dep: "ngFileUpload"
     scripts:
-      - 'lib/filesize.min'
-      - 'dialog/account-cert'
+      - "lib/filesize.min"
+      - "dialog/account-cert"
     styles:
-      - 'dialog/account-cert'
+      - "dialog/account-cert"
   paths:
     - /dialog/account-edit-cert
     - /dialog/account-add-cert
--
-  data:
+- data:
     form: ip-add
-    controller: 'AgAccountIp'
+    controller: "AgAccountIp"
     scripts:
       - dialog/account-ip
   paths:
     - /dialog/account-edit-ip
     - /dialog/account-add-ip
--
-  data:
-    controller: 'AgAccountSsh'
+- data:
+    controller: "AgAccountSsh"
     form: ssh-add-key
     scripts:
       - dialog/account-ssh

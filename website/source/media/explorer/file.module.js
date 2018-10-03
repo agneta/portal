@@ -17,12 +17,10 @@
 
 var app = angular.module('MainApp');
 
-app.service('EditFile', function(Upload, SocketIO, $timeout, $mdDialog, Portal) {
-
+app.service('EditFile', function(Upload, $mdDialog, Portal) {
   var socket = Portal.socket.media;
 
   this.init = function(options) {
-
     var scope = options.scope;
     var data = options.data;
     var Media = data.media.model;
@@ -55,7 +53,7 @@ app.service('EditFile', function(Upload, SocketIO, $timeout, $mdDialog, Portal) 
     }
 
     function onFile() {
-      if(!scope.file){
+      if (!scope.file) {
         return;
       }
       var callback = options.onFile || data.onFile;
@@ -72,7 +70,6 @@ app.service('EditFile', function(Upload, SocketIO, $timeout, $mdDialog, Portal) 
     }
 
     function load() {
-
       if (!data.location) {
         return;
       }
@@ -83,9 +80,7 @@ app.service('EditFile', function(Upload, SocketIO, $timeout, $mdDialog, Portal) 
         id: data.file && data.file.id,
         location: options.data.location
       })
-        .$promise
-        .then(function(result) {
-
+        .$promise.then(function(result) {
           if (result.notfound) {
             console.warn(result.notfound);
             return;
@@ -102,7 +97,6 @@ app.service('EditFile', function(Upload, SocketIO, $timeout, $mdDialog, Portal) 
         .finally(function() {
           scope.loading = false;
         });
-
     }
 
     load();
@@ -112,7 +106,6 @@ app.service('EditFile', function(Upload, SocketIO, $timeout, $mdDialog, Portal) 
     };
 
     scope.save = function() {
-
       scope.loading = true;
 
       Media.updateFile({
@@ -122,9 +115,8 @@ app.service('EditFile', function(Upload, SocketIO, $timeout, $mdDialog, Portal) 
         dir: scope.file.dir,
         roles: scope.file.roles
       })
-        .$promise
-        .then(function(result) {
-          console.log('Media.updateFile',result);
+        .$promise.then(function(result) {
+          console.log('Media.updateFile', result);
           scope.file = result.file;
           onFile();
           onApply();
@@ -152,20 +144,17 @@ app.service('EditFile', function(Upload, SocketIO, $timeout, $mdDialog, Portal) 
     };
 
     scope.delete = function() {
-
       $mdDialog.open({
         nested: true,
         partial: 'confirm',
         data: {
           onConfirm: function() {
-
             scope.loading = true;
 
             Media.deleteObject({
               location: scope.file.location
             })
-              .$promise
-              .then(function() {
+              .$promise.then(function() {
                 if (data.onDelete) {
                   data.onDelete();
                 }
@@ -175,15 +164,12 @@ app.service('EditFile', function(Upload, SocketIO, $timeout, $mdDialog, Portal) 
                 $mdDialog.hide();
                 scope.loading = false;
               });
-
           }
         }
       });
-
     };
 
     scope.upload = function(object) {
-
       if (object) {
         //console.log(scope.file.location);
         Upload.upload({
