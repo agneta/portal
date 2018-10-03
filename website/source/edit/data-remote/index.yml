@@ -11,5 +11,4 @@ controller: "AgEditDataRemote"
 
 editor:
   main: false
-  page:
-    if: "template.isPage"
+  page: true

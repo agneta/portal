@@ -3,9 +3,8 @@
 %>
 
 <div layout="row"
-    class="heading"
-    layout="start center"
-    layout-margin>
+    class="ag-margin"
+    layout="start center">
     <%if(editor.toolbar){%>
     <%-template(editor.toolbar)%>
     <%}%>
@@ -28,24 +27,5 @@
         ng-click="openSource()">
         Source
     </md-button>
-
-</div>
-
-<div layout="row">
-    <%if(editor.page){
-        var ngIf = '';
-        if(editor.page.if){
-            ngIf = `ng-if="${editor.page.if}"`
-        }
-        %>
-
-    <md-button>
-        Publish
-    </md-button>
-
-    <md-switch <%-ngIf%> ng-model="page.data.skip" >
-        Draft
-    </md-switch>
-    <%}%>
 
 </div>

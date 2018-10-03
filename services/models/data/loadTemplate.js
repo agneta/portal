@@ -52,7 +52,6 @@ module.exports = function(Model, app) {
         return {
           fields: fields,
           eval: templateData.eval || {},
-          isPage: templateData.page || templateData.pages ? true : false,
           orderList: orderFields,
           title: app.lng(templateData.title, options.req),
           id: options.template

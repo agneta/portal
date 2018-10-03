@@ -15,11 +15,10 @@
  *   limitations under the License.
  */
 const Promise = require('bluebird');
+const _ = require('lodash');
 
 module.exports = function(Model, app) {
-
-  Model.loadOne = function(id,template, req) {
-
+  Model.loadOne = function(id, template, req) {
     var templateData;
     var item;
     var model;
@@ -31,21 +30,19 @@ module.exports = function(Model, app) {
         return Model.__loadTemplateData({
           template: template
         });
-      }).then(function(_templateData) {
-
+      })
+      .then(function(_templateData) {
         templateData = _templateData;
         return Model.getTemplateModel(template);
-
       })
       .then(function(_model) {
         model = _model;
         return model.findById(id);
       })
       .then(function(_item) {
-
         item = _item;
 
-        if(!item){
+        if (!item) {
           return Promise.reject({
             statusCode: 404,
             message: `Could not find item with id: ${id}`
@@ -58,25 +55,23 @@ module.exports = function(Model, app) {
           app.models.History.load({
             id: item.id,
             model: model
-          })
-            .then(function(_log) {
-              log = _log;
-            }),
-          Promise.map(templateData.relations,function(relation){
-
+          }).then(function(_log) {
+            log = _log;
+          }),
+          Promise.map(templateData.relations, function(relation) {
             if (relation.type != 'relation-belongsTo') {
               return;
             }
 
             let itemId = item[relation.key];
-            if(!itemId){
+            if (!itemId) {
               return;
               //throw new Error(`Relation needs to have an ID at field: ${relation.key}`);
             }
 
             var templateData = null;
             var model = null;
-            if(relation.templateData){
+            if (relation.templateData) {
               model = Model.getModel(relation.model);
               templateData = relation.templateData;
             }
@@ -87,17 +82,15 @@ module.exports = function(Model, app) {
               model: model,
               req: req,
               id: itemId
-            })
-              .then(function(result){
-                relations[relation.name] = result;
-              });
-
+            }).then(function(result) {
+              relations[relation.name] = result;
+            });
           })
         ]);
       })
       .then(function() {
-
-        return {
+        let paths = [];
+        let result = {
           page: {
             id: item.id,
             data: item.__data,
@@ -106,37 +99,56 @@ module.exports = function(Model, app) {
           relations: relations
         };
 
+        for (var page of _.concat([], templateData.page, templateData.pages)) {
+          if (!page) {
+            continue;
+          }
+          let pagePath = _.template(page.location)({
+            page: result.page.data
+          });
+          pagePath = pagePath.split('/');
+          if (_.last(pagePath) == 'index') {
+            pagePath.pop();
+          }
+          pagePath = pagePath.join('/');
+          paths.push(pagePath);
+        }
+
+        result.page.paths = paths;
+
+        return result;
       });
   };
 
-  Model.remoteMethod(
-    'loadOne', {
-      description: 'Load Project Data with specified ID',
-      accepts: [{
+  Model.remoteMethod('loadOne', {
+    description: 'Load Project Data with specified ID',
+    accepts: [
+      {
         arg: 'id',
         type: 'string',
         required: true
-      },{
+      },
+      {
         arg: 'template',
         type: 'string',
         required: true
-      }, {
+      },
+      {
         arg: 'req',
         type: 'object',
-        'http': {
+        http: {
           source: 'req'
         }
-      }],
-      returns: {
-        arg: 'result',
-        type: 'object',
-        root: true
-      },
-      http: {
-        verb: 'get',
-        path: '/load-one'
-      },
+      }
+    ],
+    returns: {
+      arg: 'result',
+      type: 'object',
+      root: true
+    },
+    http: {
+      verb: 'get',
+      path: '/load-one'
     }
-  );
-
+  });
 };

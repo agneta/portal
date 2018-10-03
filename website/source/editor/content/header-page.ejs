@@ -1,0 +1,38 @@
+<%
+    var editor = page.editor || {};
+%>
+
+<%if(editor.page){
+    %>
+
+<div layout="row"
+    class="ag-margin"
+    ng-if="page.paths.length">
+
+    <div layout="column">
+        <a class="md-primary"
+            ng-repeat="path in page.paths"
+            ng-href="{{url('services/preview/real-time',edit.lang,path)}}"
+            target="_blank"
+            layout="row"
+            layout-align="start center">
+            <span class="title">
+                {{path}}
+            </span>
+            <md-icon md-svg-src="<%-get_icon('material/open-in-new')%>"></md-icon>
+        </a>
+    </div>
+
+    <span flex="auto"></span>
+    <md-switch ng-model="page.data.skip">
+        Draft
+    </md-switch>
+
+    <md-button>
+        Publish
+    </md-button>
+
+
+</div>
+
+<%}%>

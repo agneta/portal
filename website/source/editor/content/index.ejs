@@ -2,19 +2,15 @@
     class="page-main"
     ng-class="{active:page}">
 
-    <%-template('./toolbar')%>
+    <div class="heading"
+        layout="column"
+        layout-margin>
+        <%-template('./header-main')%>
+        <%-template('./header-page')%>
+    </div>
 
     <div class="edit-gui"
         ng-show="!sourceEnabled">
-        <div class="general-info">
-            <div ng-if="page.path"
-                layout="row"
-                layout-align="start center">
-                <label>Path:</label>
-                <p class="path">{{page.path}}</p>
-                <span flex="auto"></span>
-            </div>
-        </div>
         <%-template('editor/content/data')%>
         <%-template('editor/content/fields')%>
     </div>

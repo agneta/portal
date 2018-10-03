@@ -6,19 +6,18 @@ description:
   en: "Create, Edit, or even remove pages based on your website's templates"
   gr: "Δημιουργία, επεξεργασία, ή ακόμη και διαγραφή σελίδων που βασίζονται σε πρότυπά σας (templates)"
 
-template: 'editor'
+template: "editor"
 noHeader: true
-controller: 'AgEditPagesCtrl'
-icon: 'agneta/pages'
+controller: "AgEditPagesCtrl"
+icon: "agneta/pages"
 menuLock: true
 
 scripts:
-  - 'lib/fuse.min'
+  - "lib/fuse.min"
 
 editor:
   main: true
-  toolbar: 'edit/pages/toolbar'
-
+  page: true
 authorization:
   - administrator
   - editor

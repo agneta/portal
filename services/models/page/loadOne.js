@@ -17,20 +17,16 @@
 const fs = require('fs-extra');
 const yaml = require('js-yaml');
 
-
 module.exports = function(Model, app) {
-
   var source;
   var clientHelpers = app.web.app.locals;
 
   Model.loadOne = function(id) {
-
     var page;
     var log;
 
     return Model.getPage(id)
       .then(function(_page) {
-
         //////////////////////////////////////////
         page = _page;
         source = Model.pageSource(page);
@@ -38,61 +34,59 @@ module.exports = function(Model, app) {
         if (page.hasError) {
           return Promise.reject({
             statusCode: '400',
-            message: `This page has an error.\nFor more details visit the page:\n<a href="${clientHelpers.get_path(page.path)}" target="_blank">${page.path}</a>`
+            message: `This page has an error.\nFor more details visit the page:\n<a href="${clientHelpers.get_path(
+              page.path
+            )}" target="_blank">${page.path}</a>`
           });
         }
 
         return app.git.log({
           file: source
         });
-
       })
       .then(function(_log) {
-
         log = _log;
 
         return fs.readFile(source);
       })
       .then(function(content) {
-
         var data = yaml.safeLoad(content);
 
         return {
           page: {
+            paths: [page.path],
             data: data,
-            path: page.path,
             id: id,
             log: log
           }
         };
       });
-
   };
 
-  Model.remoteMethod(
-    'loadOne', {
-      description: 'Load page with specified ID',
-      accepts: [{
+  Model.remoteMethod('loadOne', {
+    description: 'Load page with specified ID',
+    accepts: [
+      {
         arg: 'id',
         type: 'string',
         required: true
-      }, {
+      },
+      {
         arg: 'req',
         type: 'object',
-        'http': {
+        http: {
           source: 'req'
         }
-      }],
-      returns: {
-        arg: 'result',
-        type: 'object',
-        root: true
-      },
-      http: {
-        verb: 'get',
-        path: '/load-one'
-      },
+      }
+    ],
+    returns: {
+      arg: 'result',
+      type: 'object',
+      root: true
+    },
+    http: {
+      verb: 'get',
+      path: '/load-one'
     }
-  );
-
+  });
 };

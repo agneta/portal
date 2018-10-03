@@ -99,8 +99,6 @@ module.exports = function(Model, app) {
         });
       })
       .then(function() {
-        console.log(templateData);
-
         let pages = templateData.pages || [];
         if (!templateData.page) {
           pages.push(templateData.page);
