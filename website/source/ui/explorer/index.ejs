@@ -10,6 +10,7 @@
         layout="column">
         <%-template('ui/loader')%>
         <%-template('./directory',{
+                item: locals.item,
                 sizes: 'md-cols="2" md-cols-sm="4" md-cols-md="6" md-cols-gt-md="8" md-cols-gt-lg="10" md-cols-gt-xl="12"'
               })%>
     </div>

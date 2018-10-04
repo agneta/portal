@@ -6,12 +6,11 @@
   layout-margin
   layout-align="start center">
 
-  <div layout="column"
-    layout-align="start center"
-    layout-margin
-    class="info">
+  <md-icon md-svg-src="{{get_icon('material/'+object.icon)}}">
+  </md-icon>
+  <div layout="column">
     <span class="title">{{object.title}}</span>
-    <span>{{object.path}}</span>
+    <span class="info">{{object.path}}</span>
   </div>
 
 </div>

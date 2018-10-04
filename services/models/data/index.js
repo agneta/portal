@@ -15,5 +15,5 @@ module.exports = function(Model, app) {
   require('./display')(Model, app);
   require('./getTemplatePath')(Model, app);
   require('./loadTemplate')(Model, app);
-  require('./loadDirectory')(Model, app);
+  require('./list')(Model, app);
 };

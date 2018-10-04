@@ -13,7 +13,7 @@
       ng-click="objectClick(object)"
       ng-class="{selected:object.selected}"
       ng-mouseover="onHover(object)">
-      <%-template('./item')%>
+      <%-template(locals.item||'./item')%>
     </div>
   </md-virtual-repeat-container>
 

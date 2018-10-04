@@ -69,5 +69,4 @@ module.exports = function(Model, app) {
   require('./new')(Model, app);
   require('./loadMany')(Model, app);
   require('./loadTemplate')(Model, app);
-  require('./loadDirectory')(Model, app);
 };
