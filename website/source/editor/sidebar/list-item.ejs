@@ -6,7 +6,7 @@
   layout-margin
   layout-align="start center">
 
-  <md-icon md-svg-src="{{get_icon('material/'+object.icon)}}">
+  <md-icon md-svg-src="{{get_icon('material/'+(object.type=='folder'?'folder':'insert-drive-file'))}}">
   </md-icon>
   <div layout="column">
     <span class="title">{{object.title}}</span>

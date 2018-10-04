@@ -16,11 +16,12 @@
  */
 const fs = require('fs-extra');
 const yaml = require('js-yaml');
+const path = require('path');
 
 module.exports = function(Model, app) {
   var source;
   var clientHelpers = app.web.app.locals;
-
+  var project = app.web.project;
   Model.loadOne = function(id) {
     var result;
     var page;
@@ -41,14 +42,23 @@ module.exports = function(Model, app) {
           });
         }
 
-        return app.git.log({
-          file: source
-        });
+        return fs
+          .pathExists(path.join(process.cwd(), source))
+          .then(function(exists) {
+            if (!exists) {
+              return;
+            }
+            return app.git
+              .log({
+                file: source
+              })
+              .then(function(_log) {
+                log = _log;
+              });
+          });
       })
-      .then(function(_log) {
-        log = _log;
-
-        return fs.readFile(source);
+      .then(function() {
+        return fs.readFile(project.theme.getFile(page.full_source));
       })
       .then(function(content) {
         var data = yaml.safeLoad(content);

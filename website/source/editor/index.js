@@ -18,15 +18,8 @@
 /*global _:true*/
 
 require('editor/field-menu.module');
-agneta.directive('AgEditorList', function(AgExplorer, Page) {
-  var vm = this;
-  AgExplorer.init({
-    vm: vm,
-    config: {
-      model: Page
-    }
-  });
-});
+require('./sidebar/index.module');
+
 agneta.directive('AgEditMainCtrl', function(
   $rootScope,
   $injector,
@@ -50,8 +43,6 @@ agneta.directive('AgEditMainCtrl', function(
 
   vm.edit = {};
   vm.sidebar = {};
-  vm.templates = null;
-  vm.pages = null;
   vm.page = null;
 
   vm.edit.lang = agneta.lang;
@@ -80,7 +71,6 @@ agneta.directive('AgEditMainCtrl', function(
   require('./helpers.module')(shared);
   require('./history.module')(vm, helpers);
   require('./main.module')(shared);
-  require('./search.module')(vm, $timeout);
   require('./source.module')(vm, $mdDialog, $timeout);
   require('./contributor.module')(
     vm,

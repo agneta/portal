@@ -20,7 +20,6 @@ module.exports = function(options) {
   var $rootScope = options.$rootScope;
   var helpers = options.helpers;
   var $location = options.$location;
-  var $routeParams = options.$routeParams;
   var $timeout = options.$timeout;
   var $mdDialog = options.$mdDialog;
   var scopeEdit = options.scopeEdit;
@@ -35,10 +34,6 @@ module.exports = function(options) {
     $rootScope.loadingMain = pageLoading = true;
 
     var template = obj.template;
-    if (!template) {
-      template = vm.template ? vm.template.id : null;
-      template = template || $routeParams.template;
-    }
 
     return helpers.Model.loadOne({
       id: id,
@@ -46,6 +41,7 @@ module.exports = function(options) {
     })
       .$promise.then(function(result) {
         var data = result.page.data;
+        vm.template = result.template;
 
         if (vm.template) {
           for (var i in vm.template.fields) {

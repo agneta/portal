@@ -3,6 +3,20 @@
     layout-align="start center">
 
     <div flex="auto"
+        layout="row"
+        layout-align="start center"
+        ng-hide="sidebar.tool">
+        <div class="entry"
+            ng-repeat="dir in dirs">
+            <md-icon ng-if="$index!=0"
+                md-svg-src="<%-get_icon('material/keyboard-arrow-right')%>"></md-icon>
+            <span ng-click="openFolder(dir.location)">
+                {{dir.name}}
+            </span>
+        </div>
+    </div>
+
+    <div flex="auto"
         layout="row">
 
         <input flex="auto"
