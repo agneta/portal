@@ -15,34 +15,24 @@
  *   limitations under the License.
  */
 module.exports = function(options) {
-
   var vm = options.vm;
   var helpers = options.helpers;
   var relation = {};
 
-  relation.belongsTo = function(field){
-
+  relation.belongsTo = function(field) {
     var template = field.relation.template;
-    if(!template){
+    if (!template) {
       return;
     }
     return helpers.Model.loadMany({
       template: template
-    })
-      .$promise
-      .then(function(result){
-        helpers.checkPages(result.pages);
-        field.options = result.pages;
-      });
-
+    }).$promise.then(function(result) {
+      helpers.checkPages(result.pages);
+      field.options = result.pages;
+    });
   };
 
-  relation.load = function(item,field){
-
-    vm.selectTemplate({
-      id: field.relation.template
-    });
-
+  relation.load = function(item, field) {
     vm.getPage({
       id: item.id,
       template: field.relation.template
@@ -50,5 +40,4 @@ module.exports = function(options) {
   };
 
   vm.relation = relation;
-
 };

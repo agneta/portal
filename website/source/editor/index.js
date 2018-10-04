@@ -65,9 +65,7 @@ agneta.directive('AgEditMainCtrl', function(
   };
 
   require('./field-state.module')(vm, helpers);
-  require('./templates.module')(shared);
   require('./content/fields')(vm, helpers);
-  require('./route.module')(shared);
   require('./media.module')(shared);
   require('./relation.module')(shared);
   require('./helpers.module')(shared);
@@ -166,18 +164,6 @@ agneta.directive('AgEditMainCtrl', function(
     helpers.Model = options.model;
     helpers.mediaRoot = options.mediaRoot;
     helpers.isRemote = options.isRemote;
-    var routeParams = $location.search();
-    vm.restart(true)
-      .then(function() {
-        if (routeParams.template) {
-          return vm.selectTemplate(routeParams.template);
-        }
-      })
-      .then(function() {
-        if (routeParams.id) {
-          return vm.getPage(routeParams.id);
-        }
-      });
   };
 
   vm.isInline = function(field) {

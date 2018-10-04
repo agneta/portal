@@ -18,9 +18,7 @@
 /*global S*/
 
 (function() {
-
   agneta.directive('AgPageAdd', function(data, Portal) {
-
     var scopeEdit = data.scopeEdit;
     var helpers = data.helpers;
     var vm = this;
@@ -45,12 +43,11 @@
     defaultPath = defaultPath.join('/');
     defaultPath = agneta.urljoin(defaultPath, 'new-file-name');
 
-    if (defaultPath[0] != '/')
-      defaultPath = '/' + defaultPath;
+    if (defaultPath[0] != '/') defaultPath = '/' + defaultPath;
 
-    vm.$watch('formSubmitFields.title',function(newValue){
+    vm.$watch('formSubmitFields.title', function(newValue) {
       var name = 'untitled';
-      if(newValue && newValue.length){
+      if (newValue && newValue.length) {
         name = S(newValue).slugify().s;
       }
       vm.formSubmitFields.path = `/${name}`;
@@ -63,7 +60,6 @@
     vm.template = scopeEdit.template;
 
     vm.submit = function() {
-
       var fields = vm.formSubmitFields;
       vm.loading = true;
 
@@ -71,43 +67,36 @@
         title: fields.title,
         path: fields.path,
         template: vm.template.id
-      })
-        .$promise;
+      }).$promise;
 
-      if(helpers.isRemote){
-        promise.then(function(result){
+      if (helpers.isRemote) {
+        promise.then(function(result) {
           return finalize(result);
         });
-      }else{
+      } else {
         promise.then(function(result) {
           helpers.toast(result.message || 'File created');
 
           Portal.socket.once('page-reload', function() {
             return finalize(result);
           });
-
         });
       }
 
       function finalize(result) {
-
-        return scopeEdit.getPage(result.id)
+        return scopeEdit
+          .getPage(result.id)
           .then(function() {
             vm.close();
-            return scopeEdit.selectTemplate();
           })
           .finally(function() {
             vm.loading = false;
           });
-
       }
-
-
     };
 
-    if(vm.skipForm){
+    if (vm.skipForm) {
       vm.submit();
     }
-
   });
 })();

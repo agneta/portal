@@ -16,19 +16,18 @@
  */
 
 module.exports = function(options) {
-
-  var vm =  options.vm;
-  var $rootScope =  options.$rootScope;
-  var helpers =  options.helpers;
-  var $location =  options.$location;
-  var $routeParams =  options.$routeParams;
-  var $timeout =  options.$timeout;
-  var $mdDialog =  options.$mdDialog;
-  var scopeEdit =  options.scopeEdit;
-  var Portal =  options.Portal;
+  var vm = options.vm;
+  var $rootScope = options.$rootScope;
+  var helpers = options.helpers;
+  var $location = options.$location;
+  var $routeParams = options.$routeParams;
+  var $timeout = options.$timeout;
+  var $mdDialog = options.$mdDialog;
+  var scopeEdit = options.scopeEdit;
+  var Portal = options.Portal;
   var pageLoading = false;
   vm.getPage = function(obj) {
-    if(pageLoading){
+    if (pageLoading) {
       return;
     }
     obj = obj || vm.page.id;
@@ -36,8 +35,8 @@ module.exports = function(options) {
     $rootScope.loadingMain = pageLoading = true;
 
     var template = obj.template;
-    if(!template){
-      template = vm.template?vm.template.id:null;
+    if (!template) {
+      template = vm.template ? vm.template.id : null;
       template = template || $routeParams.template;
     }
 
@@ -45,9 +44,7 @@ module.exports = function(options) {
       id: id,
       template: template
     })
-      .$promise
-      .then(function(result) {
-
+      .$promise.then(function(result) {
         var data = result.page.data;
 
         if (vm.template) {
@@ -57,7 +54,7 @@ module.exports = function(options) {
           }
         }
 
-        for(var name in result.relations){
+        for (var name in result.relations) {
           result.relations[name] = helpers.checkPage(result.relations[name]);
         }
 
@@ -70,17 +67,12 @@ module.exports = function(options) {
           template: vm.template.id
         });
 
-        if (!vm.pages) {
-          vm.selectTemplate(vm.template);
-        }
-
         vm.work = null;
         vm.page = {};
 
         $timeout(function() {
           vm.page = result.page;
         }, 300);
-
       })
       .finally(function() {
         $timeout(function() {
@@ -90,18 +82,15 @@ module.exports = function(options) {
       .catch(console.error);
   };
 
-
   vm.pageActive = function(id) {
-
     if (vm.page) {
-      return (id == vm.page.id) ? 'active' : null;
+      return id == vm.page.id ? 'active' : null;
     }
-
   };
 
   vm.pageDelete = function() {
-
-    var confirm = $mdDialog.confirm()
+    var confirm = $mdDialog
+      .confirm()
       .title('Deleting Page')
       .textContent('Are you sure you want to delete this page?')
       .ok('Yes')
@@ -111,22 +100,18 @@ module.exports = function(options) {
       helpers.Model.delete({
         id: vm.page.id,
         template: vm.template.id
-      })
-        .$promise
-        .then(function() {
-          onReload();
-          helpers.toast('File deleted');
-          Portal.socket.once('page-reload',onReload);
-        });
+      }).$promise.then(function() {
+        onReload();
+        helpers.toast('File deleted');
+        Portal.socket.once('page-reload', onReload);
+      });
     });
 
     function onReload() {
       $timeout(function() {
         vm.page = null;
-        vm.selectTemplate();
       }, 10);
     }
-
   };
 
   vm.pageAdd = function() {
@@ -149,11 +134,9 @@ module.exports = function(options) {
   };
 
   (function() {
-
     var pending = false;
 
     vm.save = function(autosave) {
-
       if (!vm.page) {
         return;
       }
@@ -166,7 +149,6 @@ module.exports = function(options) {
       pending = true;
 
       setTimeout(function() {
-
         pending = false;
 
         vm.clearHiddenData();
@@ -176,20 +158,15 @@ module.exports = function(options) {
           template: vm.template.id,
           data: vm.page.data
         })
-          .$promise
-          .then(function(result) {
+          .$promise.then(function(result) {
             if (!autosave) {
               helpers.toast(result.message || 'Changes saved');
             }
-            return vm.selectTemplate();
           })
           .finally(function() {
             $rootScope.loadingMain = false;
           });
-
       }, 1400);
-
     };
-
   })();
 };
