@@ -60,6 +60,14 @@
     - "editor"
     - "dialog/email-compose"
 - data:
+    __templates:
+      - id: media-item-menu.html
+        path: ui/explorer/item-menu
+  templates:
+    - "dialog/select"
+    - media/explorer
+    - editor
+- data:
     angular_libs:
       - priority: 0
         js: "lib/ng-file-upload.min"

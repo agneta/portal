@@ -21,12 +21,10 @@ tabs:
   default: list
   location: editor/sidebar
   list:
-    -
-      title:
+    - title:
         en: List
       name: list
-    -
-      title:
+    - title:
         en: History
       name: history
       show: page
