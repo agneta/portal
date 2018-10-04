@@ -1,6 +1,6 @@
 /*   Copyright 2017 Agneta Network Applications, LLC.
  *
- *   Source file: portal/services/models/edit/loadTemplates.js
+ *   Source file: portal/services/models/edit/loadDirectory.js
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
@@ -22,20 +22,16 @@ var klaw = require('klaw');
 const _ = require('lodash');
 
 module.exports = function(Model, app) {
-
-  Model.loadTemplates = function(req) {
-
+  Model.loadDirectory = function(req) {
     var items = {};
     console.log(Model.__dataDirs);
-    return Promise.map(Model.__dataDirs,function(dataDir){
+    return Promise.map(Model.__dataDirs, function(dataDir) {
       return Promise.resolve()
         .then(function() {
           return fs.ensureDir(dataDir);
         })
         .then(function() {
-
           return new Promise(function(resolve, reject) {
-
             klaw(dataDir)
               .on('data', function(item) {
                 if (!item.stats.isFile()) {
@@ -49,57 +45,51 @@ module.exports = function(Model, app) {
               })
               .on('error', reject)
               .on('end', resolve);
-
           });
         });
     })
       .then(function() {
-        console.log('items',items);
         return Promise.map(_.values(items), function(item) {
-          return fs.readFile(item.path)
-            .then(function(content) {
-              var data = yaml.safeLoad(content);
-              var id = item.id;
-              return {
-                id: id,
-                title: app.lng(data.title, req),
-                path_default: data.path_default
-              };
-            });
-
+          return fs.readFile(item.path).then(function(content) {
+            var data = yaml.safeLoad(content);
+            var id = item.id;
+            return {
+              id: id,
+              title: app.lng(data.title, req),
+              path_default: data.path_default
+            };
+          });
         });
       })
       .then(function(templates) {
-        templates = _.orderBy(templates,['title']);
+        templates = _.orderBy(templates, ['title']);
         return {
           templates: templates
         };
       });
-
   };
 
-  Model.remoteMethod(
-    'loadTemplates', {
-      description: 'Load all templates with optional limit',
-      accepts: [{
+  Model.remoteMethod('loadDirectory', {
+    description: 'Load all templates with optional limit',
+    accepts: [
+      {
         arg: 'req',
         type: 'object',
-        'http': {
+        http: {
           source: 'req'
         }
-      }],
-      returns: {
-        arg: 'result',
-        type: 'object',
-        root: true
-      },
-      http: {
-        verb: 'get',
-        path: '/load-templates'
-      },
+      }
+    ],
+    returns: {
+      arg: 'result',
+      type: 'object',
+      root: true
+    },
+    http: {
+      verb: 'get',
+      path: '/load-templates'
     }
-  );
+  });
 
-  return Model.loadTemplates;
-
+  return Model.loadDirectory;
 };

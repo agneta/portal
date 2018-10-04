@@ -22,6 +22,7 @@ module.exports = function(Model, app) {
   var clientHelpers = app.web.app.locals;
 
   Model.loadOne = function(id) {
+    var result;
     var page;
     var log;
 
@@ -52,7 +53,7 @@ module.exports = function(Model, app) {
       .then(function(content) {
         var data = yaml.safeLoad(content);
 
-        return {
+        result = {
           page: {
             paths: [page.path],
             data: data,
@@ -60,6 +61,11 @@ module.exports = function(Model, app) {
             log: log
           }
         };
+        return Model.loadTemplate(result.page.data.template);
+      })
+      .then(function(template) {
+        result.template = template;
+        return result;
       });
   };
 

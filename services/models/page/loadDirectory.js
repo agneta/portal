@@ -3,12 +3,12 @@ const humanizeString = require('humanize-string');
 var Promise = require('bluebird');
 
 module.exports = function(Model, app) {
-  var loadTemplates = Model.loadTemplates;
+  var loadDirectory = Model.loadDirectory;
   var project = app.web.project;
-  Model.loadTemplates = function(req) {
+  Model.loadDirectory = function(req) {
     return Promise.resolve()
       .then(function() {
-        return loadTemplates(req);
+        return loadDirectory(req);
       })
       .then(function(result) {
         var omitKeys = _.map(result.templates || [], function(item) {

@@ -1,0 +1,23 @@
+<div ng-show="isSearching || searchResults"
+    flex="100"
+    layout="column">
+
+    <div class="md-padding"
+        ng-show="isSearching"
+        flex="100"
+        layout="row"
+        layout-sm="column"
+        layout-align="center center">
+
+        <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+    </div>
+    <div ng-hide="isSearching"
+        layout="column">
+        <div ng-repeat="object in searchResults"
+            ng-click="objectClick(object)"
+            ng-mouseover="object.hovered = true"
+            ng-mouseleave="object.hovered = false">
+            <%-template('ui/explorer/item',get_data('media').search)%>
+        </div>
+    </div>
+</div>

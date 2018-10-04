@@ -65,31 +65,4 @@ module.exports = function(Model, app) {
       req: req
     });
   };
-
-  Model.remoteMethod('loadTemplate', {
-    description: 'Load template',
-    accepts: [
-      {
-        arg: 'template',
-        type: 'string',
-        required: true
-      },
-      {
-        arg: 'req',
-        type: 'object',
-        http: {
-          source: 'req'
-        }
-      }
-    ],
-    returns: {
-      arg: 'result',
-      type: 'object',
-      root: true
-    },
-    http: {
-      verb: 'get',
-      path: '/load-template'
-    }
-  });
 };

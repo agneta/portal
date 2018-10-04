@@ -4,10 +4,10 @@ title:
 
 description:
   en: "Upload, edit or event delete your images, videos, icons and other file types"
-  gr: 'Ανεβάστε, επεξεργαστείτε ή διαγράψτε εικόνες, βίντεο, και άλλους τύπους αρχείων'
+  gr: "Ανεβάστε, επεξεργαστείτε ή διαγράψτε εικόνες, βίντεο, και άλλους τύπους αρχείων"
 
-icon: 'material/vpn-key'
-template: edit/media/main
+icon: "material/vpn-key"
+template: media/explorer
 controller: AgMediaPrivate
 
 authorization:

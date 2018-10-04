@@ -4,11 +4,11 @@ title:
 
 description:
   en: "Upload, edit or event delete your images, videos, icons and other file types"
-  gr: 'Ανεβάστε, επεξεργαστείτε ή διαγράψτε εικόνες, βίντεο, και άλλους τύπους αρχείων'
+  gr: "Ανεβάστε, επεξεργαστείτε ή διαγράψτε εικόνες, βίντεο, και άλλους τύπους αρχείων"
 
-template: edit/media/main
+template: media/explorer
 controller: AgMediaPublic
-icon: 'material/insert-photo'
+icon: "material/insert-photo"
 
 authorization:
   - administrator

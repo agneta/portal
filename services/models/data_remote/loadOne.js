@@ -19,11 +19,12 @@ const _ = require('lodash');
 
 module.exports = function(Model, app) {
   Model.loadOne = function(id, template, req) {
-    var templateData;
-    var item;
-    var model;
-    var log;
-    var relations = {};
+    let templateData;
+    let item;
+    let model;
+    let log;
+    let relations = {};
+    let result;
 
     return Promise.resolve()
       .then(function() {
@@ -90,7 +91,7 @@ module.exports = function(Model, app) {
       })
       .then(function() {
         let paths = [];
-        let result = {
+        result = {
           page: {
             id: item.id,
             data: item.__data,
@@ -115,7 +116,10 @@ module.exports = function(Model, app) {
         }
 
         result.page.paths = paths;
-
+        return Model.loadTemplate(result.page.data.template);
+      })
+      .then(function(template) {
+        result.template = template;
         return result;
       });
   };

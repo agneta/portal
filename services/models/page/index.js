@@ -18,7 +18,6 @@ var path = require('path');
 var Promise = require('bluebird');
 
 module.exports = function(Model, app) {
-
   Model.omitData = [
     '_model',
     '_schema',
@@ -44,13 +43,11 @@ module.exports = function(Model, app) {
   Model.editConfigDir = 'pages';
 
   Model.getPage = function(path) {
-
     var page = webPrj.site.pages.findOne({
       path: path
     });
 
     if (!page) {
-
       return Promise.reject({
         statusCode: 400,
         message: 'Page not found: ' + path
@@ -72,6 +69,5 @@ module.exports = function(Model, app) {
   require('./new')(Model, app);
   require('./loadMany')(Model, app);
   require('./loadTemplate')(Model, app);
-  require('./loadTemplates')(Model, app);
-
+  require('./loadDirectory')(Model, app);
 };

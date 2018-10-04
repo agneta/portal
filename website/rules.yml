@@ -73,7 +73,7 @@
   templates:
     - "dialog/select"
     - "dialog/file"
-    - edit/media/main
+    - media/explorer
 - data:
     authorization:
       - administrator
