@@ -1,4 +1,4 @@
-controller: 'AgMediaSelect'
+controller: "AgMediaSelect"
 
 class: dialog-file-select
 

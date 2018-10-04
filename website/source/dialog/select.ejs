@@ -10,10 +10,12 @@
   </div>
 </md-toolbar>
 
-<md-dialog-content class="template-edit-media-main"
-  flex="100"
+<md-dialog-content flex="100"
   layout="column">
-  <%-template('media/explorer')%>
+
+  <%-template('ui/explorer',{
+    toolbar: 'media/explorer/toolbar'
+  })%>
 </md-dialog-content>
 
 <%-template('ui/loader')%>

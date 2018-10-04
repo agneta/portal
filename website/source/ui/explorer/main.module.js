@@ -18,16 +18,9 @@ var app = angular.module('MainApp');
 
 app.service('AgMediaExplorer', function(
   $rootScope,
-  Media,
-  Media_Private,
-  MediaPreview,
   Upload,
-  SocketIO,
-  $timeout,
-  $mdToast,
   $mdDialog,
   $location,
-  $sce,
   $routeParams,
   Search_Engine,
   Portal

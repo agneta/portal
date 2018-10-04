@@ -65,11 +65,11 @@
         js: "lib/ng-file-upload.min"
         dep: "ngFileUpload"
     scripts:
-      - "media/explorer"
+      - "ui/explorer"
       - "media/preview"
       - "lib/fuse.min"
     styles:
-      - "media/explorer"
+      - "ui/explorer"
   templates:
     - "dialog/select"
     - "dialog/file"
