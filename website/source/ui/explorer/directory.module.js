@@ -16,14 +16,12 @@
  */
 
 module.exports = function(options) {
-
   var vm = options.vm;
   var Portal = options.Portal;
   var $location = options.$location;
   var $rootScope = options.$rootScope;
   var config = options.config;
   var $mdDialog = options.$mdDialog;
-  var Upload = options.Upload;
 
   var socket = Portal.socket.media;
   var objects = [];
@@ -31,7 +29,6 @@ module.exports = function(options) {
   var loadmoreCount = 20;
 
   function readdir() {
-
     var dir = vm.dir;
 
     if (dir.location.length) {
@@ -45,7 +42,6 @@ module.exports = function(options) {
     vm.objectsOnDemand.numLoaded_ = 0;
     vm.objectsOnDemand.toLoad_ = 0;
     vm.objectsOnDemand.fetchMoreItems_(1);
-
   }
 
   vm.refresh = readdir;
@@ -78,17 +74,13 @@ module.exports = function(options) {
     fetchMoreItems_: function(index) {
       var self = this;
       var marker = null;
+
       if (lastResult) {
         if (lastResult.truncated) {
           marker = lastResult.nextMarker;
         } else {
           return;
         }
-      }
-
-      if (!this.toLoad_) {
-        this.toLoad_ = 1;
-        return;
       }
 
       if (this.toLoad_ - this.numLoaded_ > loadmoreCount) {
@@ -115,10 +107,9 @@ module.exports = function(options) {
           loader = 'isLoadingMore';
         }
         vm[loader] = true;
-        config.model.list(params)
-          .$promise
-          .then(function(result) {
-
+        config.model
+          .list(params)
+          .$promise.then(function(result) {
             lastResult = result;
 
             for (var _index in result.objects) {
@@ -142,7 +133,6 @@ module.exports = function(options) {
           .finally(function() {
             vm[loader] = false;
           });
-
       }
     }
   };
@@ -171,26 +161,23 @@ module.exports = function(options) {
   //---------------------------------------------------
 
   vm.newFolder = function() {
-
     $mdDialog.open({
       nested: true,
       partial: 'new-folder',
       data: {
         onApply: function(name) {
-          return config.model.newFolder({
-            dir: vm.dir.location,
-            name: name
-          })
-            .$promise
-            .then(readdir);
+          return config.model
+            .newFolder({
+              dir: vm.dir.location,
+              name: name
+            })
+            .$promise.then(readdir);
         }
       }
     });
-
   };
 
   vm.objectClick = function(object) {
-
     switch (object.type) {
       case 'folder':
         vm.openFolder(object);
@@ -198,7 +185,6 @@ module.exports = function(options) {
       default:
         vm.openObject(object);
         break;
-
     }
   };
 
@@ -216,47 +202,20 @@ module.exports = function(options) {
     console.log('menu', object);
   };
 
-  vm.openObject = vm.openObject || function(object) {
-
-    $mdDialog.open({
-      partial: config.partial,
-      data: {
-        apiMedia: config.api,
-        Media: config.model,
-        MediaPreview: config.preview,
-        location: object.location,
-        onChange: function() {
-          vm.refresh();
-        }
-      }
-    });
-  };
-
-  vm.uploadFiles = function(objects, errFiles) {
-
-    if (errFiles && errFiles.length) {
-      console.error(errFiles);
-    }
-
-    if (objects && objects.length) {
-      Upload.upload({
-        url: agneta.url(config.api + 'upload-files'),
+  vm.openObject =
+    vm.openObject ||
+    function(object) {
+      $mdDialog.open({
+        partial: config.partial,
         data: {
-          dir: vm.dir.location,
-          objects: objects
-        },
-        arrayKey: ''
-      })
-        .then(function() {},
-          function(response) {
-            if (response.status > 0)
-              vm.errorMsg = response.status + ': ' + response.data;
-          },
-          function(evt) {
-            vm.uploadProgress = Math.min(100, parseInt(100.0 *
-              evt.loaded / evt.total));
-          });
-
-    }
-  };
+          apiMedia: config.api,
+          Media: config.model,
+          MediaPreview: config.preview,
+          location: object.location,
+          onChange: function() {
+            vm.refresh();
+          }
+        }
+      });
+    };
 };

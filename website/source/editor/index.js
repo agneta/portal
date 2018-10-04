@@ -18,6 +18,16 @@
 /*global _:true*/
 
 require('editor/field-menu.module');
+agneta.directive('AgEditorList', function(AgExplorer, Page) {
+  var vm = this;
+
+  AgExplorer.init({
+    vm: vm,
+    config: {
+      model: Page
+    }
+  });
+});
 agneta.directive('AgEditMainCtrl', function(
   $rootScope,
   $injector,

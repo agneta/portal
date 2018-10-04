@@ -15,13 +15,7 @@
  *   limitations under the License.
  */
 
-agneta.directive('mediaItem', function(
-  $mdMenu,
-  $element,
-  EditFile,
-  $rootScope,
-  $mdDialog
-) {
+agneta.directive('mediaItem', function($element, $mdDialog) {
   var scope = this;
 
   function prompt(options) {

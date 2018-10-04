@@ -15,6 +15,8 @@
  *   limitations under the License.
  */
 
+require('./edit.module');
+
 agneta.directive('AgEditFile', function(data, EditFile, AgMedia) {
   var vm = this;
 

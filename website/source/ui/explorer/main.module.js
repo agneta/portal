@@ -16,9 +16,8 @@
  */
 var app = angular.module('MainApp');
 
-app.service('AgMediaExplorer', function(
+app.service('AgExplorer', function(
   $rootScope,
-  Upload,
   $mdDialog,
   $location,
   $routeParams,
@@ -31,19 +30,19 @@ app.service('AgMediaExplorer', function(
 
     vm.mediaModel = config.model;
 
-    Search_Engine.init({
-      name: config.keywordFileName,
-      scope: vm,
-      model: config.model,
-      onResult: function(result) {
-        for (var index in result.items) {
-          var object = result.items[index];
-          config.preview.set(object);
+    if (config.keywordFileName) {
+      Search_Engine.init({
+        name: config.keywordFileName,
+        scope: vm,
+        model: config.model,
+        onResult: function(result) {
+          for (var index in result.items) {
+            var object = result.items[index];
+            config.preview.set(object);
+          }
         }
-      }
-    });
-
-    config.preview.toScope(vm);
+      });
+    }
 
     var dirRoot = {
       name: 'root',
@@ -55,7 +54,9 @@ app.service('AgMediaExplorer', function(
     //-----------------------------------------
 
     vm.openFolder = function(location) {
-      vm.searchClear();
+      if (vm.searchClear) {
+        vm.searchClear();
+      }
 
       location = location || '';
       location = location.location || location;
@@ -97,8 +98,7 @@ app.service('AgMediaExplorer', function(
       $location: $location,
       $rootScope: $rootScope,
       config: config,
-      $mdDialog: $mdDialog,
-      Upload: Upload
+      $mdDialog: $mdDialog
     });
 
     vm.openFolder(startingLocation);
