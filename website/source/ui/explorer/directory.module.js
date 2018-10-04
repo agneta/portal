@@ -83,6 +83,11 @@ module.exports = function(options) {
         }
       }
 
+      if (!this.toLoad_) {
+        this.toLoad_ = 1;
+        return;
+      }
+
       if (this.toLoad_ - this.numLoaded_ > loadmoreCount) {
         return;
       }
@@ -101,7 +106,7 @@ module.exports = function(options) {
           params.marker = marker;
         }
 
-        //console.warn('fetchMoreItems_', index, this.numLoaded_, this.toLoad_);
+        console.warn('fetchMoreItems_', index, this.numLoaded_, this.toLoad_);
         var loader = 'loading';
         if (objects.length) {
           loader = 'isLoadingMore';
@@ -117,7 +122,9 @@ module.exports = function(options) {
               object.onChange = function() {
                 vm.refresh();
               };
-              config.preview.set(object);
+              if (config.preview) {
+                config.preview.set(object);
+              }
             }
 
             $rootScope.loadingMain = false;

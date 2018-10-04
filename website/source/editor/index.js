@@ -20,7 +20,6 @@
 require('editor/field-menu.module');
 agneta.directive('AgEditorList', function(AgExplorer, Page) {
   var vm = this;
-
   AgExplorer.init({
     vm: vm,
     config: {
