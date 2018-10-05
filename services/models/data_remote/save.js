@@ -26,10 +26,10 @@ module.exports = function(Model, app) {
   var webProject = app.web.project;
 
   Model.save = function(id, template, data, req) {
-    var templateData;
-    var model;
-    var item;
-
+    let templateData;
+    let model;
+    let item;
+    let relations;
     return Promise.resolve()
       .then(function() {
         return Model.__loadTemplateData({
@@ -99,8 +99,15 @@ module.exports = function(Model, app) {
         });
       })
       .then(function() {
+        return Model.getRelations({
+          item: item,
+          templateData: templateData
+        });
+      })
+      .then(function(_relations) {
+        relations = _relations;
         let pages = templateData.pages || [];
-        if (!templateData.page) {
+        if (templateData.page) {
           pages.push(templateData.page);
         }
         if (!pages.length) {
@@ -150,7 +157,8 @@ module.exports = function(Model, app) {
 
         function template(content) {
           return _.template(content)({
-            page: data
+            page: data,
+            relation: relations
           });
         }
       });

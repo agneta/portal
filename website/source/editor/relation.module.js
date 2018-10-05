@@ -27,8 +27,8 @@ module.exports = function(options) {
     return helpers.Model.loadMany({
       template: template
     }).$promise.then(function(result) {
-      helpers.checkPages(result.pages);
-      field.options = result.pages;
+      helpers.checkPages(result.objects);
+      field.options = result.objects;
     });
   };
 

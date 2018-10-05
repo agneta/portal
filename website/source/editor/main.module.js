@@ -33,7 +33,7 @@ module.exports = function(options) {
     var id = obj.id || obj;
     $rootScope.loadingMain = pageLoading = true;
 
-    var template = obj.template;
+    var template = obj.template || vm.dir.location;
 
     return helpers.Model.loadOne({
       id: id,
@@ -94,7 +94,7 @@ module.exports = function(options) {
     $mdDialog.show(confirm).then(function() {
       helpers.Model.delete({
         id: vm.page.id,
-        template: vm.template.id
+        template: vm.dir.location
       }).$promise.then(function() {
         onReload();
         helpers.toast('File deleted');
@@ -128,6 +128,15 @@ module.exports = function(options) {
     });
   };
 
+  vm.$watch('dirs', function(value) {
+    if (!value) {
+      return;
+    }
+    vm.template = {
+      id: value.join('')
+    };
+  });
+
   (function() {
     var pending = false;
 
@@ -150,7 +159,7 @@ module.exports = function(options) {
 
         helpers.Model.save({
           id: vm.page.id,
-          template: vm.template.id,
+          template: vm.dir.location,
           data: vm.page.data
         })
           .$promise.then(function(result) {

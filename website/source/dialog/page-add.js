@@ -15,59 +15,19 @@
  *   limitations under the License.
  */
 
-/*global S*/
-
 (function() {
   agneta.directive('AgPageAdd', function(data, Portal) {
     var scopeEdit = data.scopeEdit;
     var helpers = data.helpers;
     var vm = this;
 
-    vm.title = data.title;
-    vm.skipForm = helpers.isRemote;
-
     agneta.extend(vm, 'AgDialogCtrl');
 
-    if (!scopeEdit.template) {
-      return;
-    }
-
-    var defaultPath = scopeEdit.page && scopeEdit.page.path;
-    if (!defaultPath) {
-      defaultPath = scopeEdit.template.path_default || '';
-      defaultPath += '/old-file-name';
-    }
-
-    defaultPath = defaultPath.split('/');
-    defaultPath.pop();
-    defaultPath = defaultPath.join('/');
-    defaultPath = agneta.urljoin(defaultPath, 'new-file-name');
-
-    if (defaultPath[0] != '/') defaultPath = '/' + defaultPath;
-
-    vm.$watch('formSubmitFields.title', function(newValue) {
-      var name = 'untitled';
-      if (newValue && newValue.length) {
-        name = S(newValue).slugify().s;
-      }
-      vm.formSubmitFields.path = `/${name}`;
-    });
-
-    vm.formSubmitFields = {
-      path: defaultPath
-    };
-
-    vm.template = scopeEdit.template;
-
     vm.submit = function() {
-      var fields = vm.formSubmitFields;
       vm.loading = true;
 
-      var promise = helpers.Model.new({
-        title: fields.title,
-        path: fields.path,
-        template: vm.template.id
-      }).$promise;
+      var fields = vm.formSubmitFields;
+      var promise = helpers.Model.new(fields).$promise;
 
       if (helpers.isRemote) {
         promise.then(function(result) {
@@ -85,7 +45,10 @@
 
       function finalize(result) {
         return scopeEdit
-          .getPage(result.id)
+          .getPage({
+            id: result.id,
+            template: fields.template
+          })
           .then(function() {
             vm.close();
           })
@@ -94,9 +57,5 @@
           });
       }
     };
-
-    if (vm.skipForm) {
-      vm.submit();
-    }
   });
 })();

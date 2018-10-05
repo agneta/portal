@@ -18,20 +18,13 @@ const Promise = require('bluebird');
 const _ = require('lodash');
 
 module.exports = function(Model, app) {
-  Model.loadOne = function(id, req) {
+  Model.loadOne = function(id, template) {
     let templateData;
     let item;
-    let model;
     let log;
+    let model;
     let relations = {};
     let result;
-
-    var idParts = id.split('/');
-    idParts = _.compact(idParts);
-    var template = idParts.shift();
-    id = idParts.join('/');
-
-    console.log(id, template);
 
     return Promise.resolve()
       .then(function() {
@@ -66,33 +59,11 @@ module.exports = function(Model, app) {
           }).then(function(_log) {
             log = _log;
           }),
-          Promise.map(templateData.relations, function(relation) {
-            if (relation.type != 'relation-belongsTo') {
-              return;
-            }
-
-            let itemId = item[relation.key];
-            if (!itemId) {
-              return;
-              //throw new Error(`Relation needs to have an ID at field: ${relation.key}`);
-            }
-
-            let templateData = null;
-            let model = null;
-            if (relation.templateData) {
-              model = Model.getModel(relation.model);
-              templateData = relation.templateData;
-            }
-
-            return Model.__display({
-              template: relation.template,
-              templateData: templateData,
-              model: model,
-              req: req,
-              id: itemId
-            }).then(function(result) {
-              relations[relation.name] = result;
-            });
+          Model.getRelations({
+            templateData: templateData,
+            item: item
+          }).then(function(_relations) {
+            relations - _relations;
           })
         ]);
       })
@@ -108,13 +79,13 @@ module.exports = function(Model, app) {
         };
 
         let pages = _.concat([], templateData.page, templateData.pages);
-        console.log(pages);
         for (var page of pages) {
           if (!page) {
             continue;
           }
           let pagePath = _.template(page.location)({
-            page: result.page.data
+            page: result.page.data,
+            relation: relations
           });
           pagePath = pagePath.split('/');
           if (_.last(pagePath) == 'index') {
@@ -138,6 +109,11 @@ module.exports = function(Model, app) {
     accepts: [
       {
         arg: 'id',
+        type: 'string',
+        required: true
+      },
+      {
+        arg: 'template',
         type: 'string',
         required: true
       },

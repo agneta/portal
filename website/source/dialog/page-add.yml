@@ -6,33 +6,18 @@ authorization:
   - editor
 
 scripts:
-  - 'lib/string.min'
+  - "lib/string.min"
 
 controller: AgPageAdd
 
 form:
-  name: 'formSubmit'
-  onSubmit: 'submit()'
+  name: "formSubmit"
+  onSubmit: "submit()"
   fields:
-   -
-    title:
-      en: "Title"
-      gr: "Τίτλος"
-    type: "text"
-    name: title
-    group: "input"
-    validators:
-      minlength: 2
-      maxlength: 50
-      required: true
-   -
-    title:
-      en: "Path"
-      gr: "Τοποθεσία"
-    type: "text"
-    name: path
-    group: "input"
-    validators:
-      minlength: 2
-      maxlength: 400
-      required: true
+    - title:
+        en: "Template"
+      type: "text"
+      name: template
+      group: "input"
+      validators:
+        required: true

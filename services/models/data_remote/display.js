@@ -79,7 +79,7 @@ module.exports = function(Model, app) {
 
     item = item.__data || item;
     var result = {
-      id: `${templateData.id}/${item.id}`,
+      id: item.id,
       metadata: []
     };
 

@@ -1,8 +1,9 @@
 <div layout="column"
-  class="page-main"
-  ng-class="{active:page}">
+  class="editor-container">
   <%-template('./toolbar')%>
   <div ag-include
+    class="page-main"
+    ng-class="{active:page}"
     page="{{mode.page}}"></div>
 </div>
 <%-template('editor/messages')%>

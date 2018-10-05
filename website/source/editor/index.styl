@@ -9,6 +9,10 @@
 	@import ('./contributor.module');
 	@import ('./push-changes.module');
 
+	.view-container {
+		background: rgb(236, 236, 236);
+	}
+
 	.top-bar {
 		.settings {
 			.md-icon-button {
@@ -46,7 +50,6 @@
 	.page-main {
 		opacity: 0;
 		transition: opacity 400ms;
-		background: rgb(236, 236, 236);
 
 		&.active {
 			opacity: 1;

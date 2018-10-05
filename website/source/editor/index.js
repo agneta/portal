@@ -166,8 +166,11 @@ agneta.directive('AgEditMainCtrl', function(
     helpers.mediaRoot = options.mediaRoot;
     helpers.isRemote = options.isRemote;
 
-    if ($routeParams.id) {
-      vm.getPage($routeParams.id);
+    if ($routeParams.id && $routeParams.location) {
+      vm.getPage({
+        id: $routeParams.id,
+        template: $routeParams.location
+      });
     }
 
     sidebar();
