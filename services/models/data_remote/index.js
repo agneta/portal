@@ -15,27 +15,24 @@
  *   limitations under the License.
  */
 module.exports = function(Model, app) {
-
   Model.editConfigDir = 'data-remote';
 
-  Model.getTemplateModel = function(template){
-
+  Model.getTemplateModel = function(template) {
     var webServices = app.web.services;
 
-    return Promise.resolve()
-      .then(function() {
-        var templateConfig = webServices.dataRemote[template];
+    return Promise.resolve().then(function() {
+      var templateConfig = webServices.dataRemote[template];
 
-        if(!templateConfig){
-          return Promise.reject({
-            statusCode: 404,
-            message: `Template config not found with name ${template}`
-          });
-        }
-        return webServices.models[templateConfig.modelName];
-      });
-
+      if (!templateConfig) {
+        return Promise.reject({
+          statusCode: 404,
+          message: `Template config not found with name ${template}`
+        });
+      }
+      return webServices.models[templateConfig.modelName];
+    });
   };
+  require('./display')(Model, app);
   require('./loadCommit')(Model, app);
   require('./loadOne')(Model, app);
   require('./delete')(Model, app);
@@ -43,5 +40,4 @@ module.exports = function(Model, app) {
   require('./new')(Model, app);
   require('./loadMany')(Model, app);
   require('../data')(Model, app);
-
 };

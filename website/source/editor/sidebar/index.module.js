@@ -2,7 +2,7 @@ agneta.directive('AgEditorList', function(AgExplorer, Page) {
   var vm = this;
 
   vm.openObject = function(object) {
-    vm.getPage(object.path);
+    vm.getPage(object);
   };
 
   AgExplorer.init({

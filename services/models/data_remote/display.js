@@ -2,29 +2,26 @@ const Promise = require('bluebird');
 const _ = require('lodash');
 
 module.exports = function(Model, app) {
-
   Model.__display = function(options) {
-
-    var template =  options.template;
-    var order =  options.order;
-    var req =  options.req;
+    var template = options.template;
+    var order = options.order;
+    var req = options.req;
 
     var templateData;
 
     return Promise.resolve()
       .then(function() {
-        if(options.templateData){
+        if (options.templateData) {
           return options.templateData;
         }
         return Model.__loadTemplateData({
           template: template
         });
-
       })
       .then(function(_templateData) {
         templateData = _templateData;
-        if(options.model){
-          if(_.isString(options.model)){
+        if (options.model) {
+          if (_.isString(options.model)) {
             return Model.projectModel(options.model);
           }
           return options.model;
@@ -32,28 +29,34 @@ module.exports = function(Model, app) {
         return Model.getTemplateModel(template);
       })
       .then(function(model) {
-
         var displayOptions = templateData.display;
         displayOptions = _.cloneDeep(displayOptions);
 
-        _.extend(displayOptions,{
+        _.extend(displayOptions, {
           order: order
         });
 
         //console.log(require('util').inspect(displayOptions, { depth: null }));
 
-        if(options.id){
-          return model.findById(options.id,displayOptions)
-            .then(onItem);
+        if (options.id) {
+          return model
+            .findById(options.id, displayOptions)
+            .then(onItem)
+            .then(function(result) {
+              result.template = templateData;
+              return result;
+            });
         }
 
-        return model.find(displayOptions)
+        return model
+          .find(displayOptions)
           .then(function(items) {
             return Promise.mapSeries(items, onItem);
           })
           .then(function(pages) {
             return {
-              pages: pages
+              objects: pages,
+              count: pages.length
             };
           });
 
@@ -65,11 +68,9 @@ module.exports = function(Model, app) {
           });
         }
       });
-
   };
 
   function getValues(options) {
-
     var item = options.item;
     var req = options.req;
     var templateData = options.templateData;
@@ -85,29 +86,25 @@ module.exports = function(Model, app) {
     //console.log(item, labels);
 
     return Promise.all([
-      Promise.map(['title','subtitle','image'],function(name){
-        return getItem(name)
-          .then(function(item){
-            result[name] = item;
-          });
+      Promise.map(['title', 'subtitle', 'image'], function(name) {
+        return getItem(name).then(function(item) {
+          result[name] = item;
+        });
       }),
-      Promise.map(labels.metadata,function(label){
-        return getItem(label)
-          .then(function(item){
-            result.metadata.push(item);
-          });
+      Promise.map(labels.metadata, function(label) {
+        return getItem(label).then(function(item) {
+          result.metadata.push(item);
+        });
       })
-    ])
-      .then(function(){
-        return result;
-      });
+    ]).then(function() {
+      return result;
+    });
 
-    function getItem(labelOriginal){
-
+    function getItem(labelOriginal) {
       var value;
-      var label = labels[labelOriginal]||labelOriginal;
+      var label = labels[labelOriginal] || labelOriginal;
       var labelName = labelOriginal;
-      if(_.isObject(label)){
+      if (_.isObject(label)) {
         labelName = label.label || labelName;
         label = label.field || labelOriginal;
       }
@@ -115,8 +112,7 @@ module.exports = function(Model, app) {
 
       return Promise.resolve()
         .then(function() {
-
-          if(!field.relation){
+          if (!field.relation) {
             return;
           }
 
@@ -126,7 +122,7 @@ module.exports = function(Model, app) {
 
           value = item[field.relation.name];
 
-          if(!value){
+          if (!value) {
             return;
           }
 
@@ -134,64 +130,54 @@ module.exports = function(Model, app) {
             item: value,
             req: req,
             templateData: field.relation.templateData
-          })
-            .then(function(display) {
-              value = display;
-            });
+          }).then(function(display) {
+            value = display;
+          });
         })
         .then(function() {
-
-          if(!value){
+          if (!value) {
             value = item[label];
           }
           var type = field.type;
 
-          if(!value){
+          if (!value) {
             return;
           }
 
-
-
-          switch(field.type){
+          switch (field.type) {
             case 'date-time':
               type = 'date';
-              value = value+'';
+              value = value + '';
               break;
             case 'media':
               value = value.location;
               break;
             case 'select':
-              value = _.get(
-                _.find(field.options,{value:value}),'title'
-              ) || value;
+              value =
+                _.get(_.find(field.options, { value: value }), 'title') ||
+                value;
               value = app.lng(value, req);
               break;
             case 'relation-belongsTo':
               //console.log('--------------');
               //console.log(value,labelName);
               value = value[labelName];
-              if(value && value.value){
+              if (value && value.value) {
                 value = value.value;
               }
               break;
             default:
-              if(_.isObject(value)){
+              if (_.isObject(value)) {
                 value = app.lng(value, req);
               }
               break;
           }
 
-
-
           return {
             type: type,
             value: value
           };
-
         });
-
-
     }
-
   }
 };

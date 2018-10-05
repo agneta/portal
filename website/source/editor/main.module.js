@@ -59,8 +59,7 @@ module.exports = function(options) {
         helpers.structureData(vm.template, data);
 
         $location.search({
-          id: id,
-          template: vm.template.id
+          id: id
         });
 
         vm.work = null;

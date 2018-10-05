@@ -6,11 +6,25 @@
   layout-margin
   layout-align="start center">
 
-  <md-icon md-svg-src="{{get_icon('material/'+(object.type=='folder'?'folder':'insert-drive-file'))}}">
+  <div ng-if="item.image"
+    class="image"
+    style="background-image:url({{item.image}})">
+  </div>
+
+  <md-icon ng-if="!item.image"
+    md-svg-src="{{get_icon('material/'+(object.type=='folder'?'folder':'insert-drive-file'))}}">
   </md-icon>
+
   <div layout="column">
     <span class="title">{{object.title}}</span>
-    <span class="info">{{object.path}}</span>
+    <span class="info">{{object.subtitle}}</span>
+    <div ng-if="item.metadata"
+      layout="row"
+      layout-wrap>
+      <div ng-repeat="data in item.metadata">
+        {{data.value}}
+      </div>
+    </div>
   </div>
 
 </div>

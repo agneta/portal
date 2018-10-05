@@ -22,11 +22,9 @@ var readdir = Promise.promisify(fs.readdir);
 var readFile = Promise.promisify(fs.readFile);
 
 module.exports = function(Model, app) {
-
   var webProject = app.web.project;
 
   Model.loadMany = function(template, req) {
-
     var templateDir = path.join(webProject.paths.app.data, template);
 
     return Promise.resolve()
@@ -37,59 +35,54 @@ module.exports = function(Model, app) {
         return readdir(templateDir);
       })
       .then(function(files) {
-
         return Promise.map(files, function(fileName) {
-          return readFile(
-            path.join(templateDir, fileName)
-          )
-            .then(function(content) {
-
-              var data = yaml.safeLoad(content);
-              var fileNameParsed = path.parse(fileName);
-              var name = fileNameParsed.name;
-              var id = [template, name].join('/');
-              return {
-                title: app.lng(data.title, req),
-                path: '/' + id,
-                id: id
-              };
-            });
+          return readFile(path.join(templateDir, fileName)).then(function(
+            content
+          ) {
+            var data = yaml.safeLoad(content);
+            var fileNameParsed = path.parse(fileName);
+            var name = fileNameParsed.name;
+            var id = [template, name].join('/');
+            return {
+              title: app.lng(data.title, req),
+              path: '/' + id,
+              id: id
+            };
+          });
         });
-
       })
       .then(function(result) {
-
         return {
-          pages: result
+          objects: result,
+          count: result.length
         };
       });
-
   };
 
-  Model.remoteMethod(
-    'loadMany', {
-      description: 'Load all pages with optional limit',
-      accepts: [{
+  Model.remoteMethod('loadMany', {
+    description: 'Load all pages with optional limit',
+    accepts: [
+      {
         arg: 'template',
         type: 'string',
         required: true
-      }, {
+      },
+      {
         arg: 'req',
         type: 'object',
-        'http': {
+        http: {
           source: 'req'
         }
-      }],
-      returns: {
-        arg: 'result',
-        type: 'object',
-        root: true
-      },
-      http: {
-        verb: 'get',
-        path: '/load-many'
-      },
+      }
+    ],
+    returns: {
+      arg: 'result',
+      type: 'object',
+      root: true
+    },
+    http: {
+      verb: 'get',
+      path: '/load-many'
     }
-  );
-
+  });
 };

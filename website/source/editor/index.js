@@ -163,6 +163,10 @@ agneta.directive('AgEditMainCtrl', function(
     helpers.Model = options.model;
     helpers.mediaRoot = options.mediaRoot;
     helpers.isRemote = options.isRemote;
+
+    if ($routeParams.id) {
+      vm.getPage($routeParams.id);
+    }
   };
 
   vm.isInline = function(field) {
