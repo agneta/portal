@@ -39,7 +39,8 @@ module.exports = function(Model, app) {
             var data = yaml.safeLoad(content);
             var id = item.id;
             return {
-              id: id,
+              location: id,
+              type: 'folder',
               title: app.lng(data.title, req),
               path_default: data.path_default
             };
@@ -49,7 +50,8 @@ module.exports = function(Model, app) {
       .then(function(templates) {
         templates = _.orderBy(templates, ['title']);
         return {
-          templates: templates
+          objects: templates,
+          count: templates.length
         };
       });
   };

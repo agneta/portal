@@ -17,10 +17,18 @@
 
 /*global jsyaml:true*/
 
-module.exports = function(vm, $mdDialog,$timeout) {
+module.exports = function(vm) {
+  vm.mode = {};
 
-  vm.openSource = function() {
+  vm.openVisual = function() {
+    vm.mode = {};
+    vm.mode.visual = true;
+  };
 
+  vm.openCode = function() {
+    vm.mode = {};
+    vm.mode.code = true;
+    /*
     $mdDialog.open({
       partial: 'page-source',
       data: {
@@ -50,6 +58,8 @@ module.exports = function(vm, $mdDialog,$timeout) {
         }
       }
     });
+    */
   };
 
+  vm.openVisual();
 };

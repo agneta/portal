@@ -18,7 +18,6 @@
 /*global _:true*/
 
 require('editor/field-menu.module');
-require('./sidebar/index.module');
 
 agneta.directive('AgEditMainCtrl', function(
   $rootScope,
@@ -33,7 +32,8 @@ agneta.directive('AgEditMainCtrl', function(
   $location,
   $mdDialog,
   Portal,
-  Role_Editor
+  Role_Editor,
+  AgExplorer
 ) {
   var vm = this;
   var helpers = {};
@@ -61,9 +61,11 @@ agneta.directive('AgEditMainCtrl', function(
     $injector: $injector,
     $mdDialog: $mdDialog,
     scopeEdit: scopeEdit,
-    Portal: Portal
+    Portal: Portal,
+    AgExplorer: AgExplorer
   };
 
+  var sidebar = require('./sidebar/index.module')(shared);
   require('./field-state.module')(vm, helpers);
   require('./content/fields')(vm, helpers);
   require('./media.module')(shared);
@@ -167,6 +169,8 @@ agneta.directive('AgEditMainCtrl', function(
     if ($routeParams.id) {
       vm.getPage($routeParams.id);
     }
+
+    sidebar();
   };
 
   vm.isInline = function(field) {

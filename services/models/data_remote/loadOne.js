@@ -18,13 +18,20 @@ const Promise = require('bluebird');
 const _ = require('lodash');
 
 module.exports = function(Model, app) {
-  Model.loadOne = function(id, template, req) {
+  Model.loadOne = function(id, req) {
     let templateData;
     let item;
     let model;
     let log;
     let relations = {};
     let result;
+
+    var idParts = id.split('/');
+    idParts = _.compact(idParts);
+    var template = idParts.shift();
+    id = idParts.join('/');
+
+    console.log(id, template);
 
     return Promise.resolve()
       .then(function() {
@@ -70,8 +77,8 @@ module.exports = function(Model, app) {
               //throw new Error(`Relation needs to have an ID at field: ${relation.key}`);
             }
 
-            var templateData = null;
-            var model = null;
+            let templateData = null;
+            let model = null;
             if (relation.templateData) {
               model = Model.getModel(relation.model);
               templateData = relation.templateData;
@@ -100,7 +107,9 @@ module.exports = function(Model, app) {
           relations: relations
         };
 
-        for (var page of _.concat([], templateData.page, templateData.pages)) {
+        let pages = _.concat([], templateData.page, templateData.pages);
+        console.log(pages);
+        for (var page of pages) {
           if (!page) {
             continue;
           }
@@ -116,7 +125,7 @@ module.exports = function(Model, app) {
         }
 
         result.page.paths = paths;
-        return Model.loadTemplate(result.page.data.template);
+        return Model.loadTemplate(template);
       })
       .then(function(template) {
         result.template = template;
@@ -129,11 +138,6 @@ module.exports = function(Model, app) {
     accepts: [
       {
         arg: 'id',
-        type: 'string',
-        required: true
-      },
-      {
-        arg: 'template',
         type: 'string',
         required: true
       },

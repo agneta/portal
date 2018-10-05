@@ -6,22 +6,24 @@
   layout-margin
   layout-align="start center">
 
-  <div ng-if="item.image"
+  <div ng-if="object.image"
     class="image"
-    style="background-image:url({{item.image}})">
+    style="background-image:url({{get_media(object.image,'thumbnail')}})">
   </div>
 
-  <md-icon ng-if="!item.image"
+  <md-icon ng-if="!object.image"
     md-svg-src="{{get_icon('material/'+(object.type=='folder'?'folder':'insert-drive-file'))}}">
   </md-icon>
 
   <div layout="column">
     <span class="title">{{object.title}}</span>
     <span class="info">{{object.subtitle}}</span>
-    <div ng-if="item.metadata"
+    <div ng-if="object.metadata"
+      class="metadata"
       layout="row"
       layout-wrap>
-      <div ng-repeat="data in item.metadata">
+      <div class="item"
+        ng-repeat="data in object.metadata">
         {{data.value}}
       </div>
     </div>

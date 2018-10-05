@@ -79,7 +79,7 @@ module.exports = function(Model, app) {
 
     item = item.__data || item;
     var result = {
-      id: item.id,
+      id: `${templateData.id}/${item.id}`,
       metadata: []
     };
 
@@ -88,7 +88,10 @@ module.exports = function(Model, app) {
     return Promise.all([
       Promise.map(['title', 'subtitle', 'image'], function(name) {
         return getItem(name).then(function(item) {
-          result[name] = item;
+          if (!item) {
+            return;
+          }
+          result[name] = item.value || item;
         });
       }),
       Promise.map(labels.metadata, function(label) {

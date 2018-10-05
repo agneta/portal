@@ -3,11 +3,25 @@
 %>
 
 <div layout="row"
-    class="ag-margin"
+    class="ag-margin main"
     layout="start center">
-    <%if(editor.toolbar){%>
-    <%-template(editor.toolbar)%>
-    <%}%>
+
+    <div layout="row"
+        class="ag-margin mode"
+        layout="start center">
+        <span>Mode:</span>
+        <md-button class="md-primary"
+            ng-class="{active:mode.visual}"
+            ng-click="openVisual()">
+            Content
+        </md-button>
+        <md-button class="md-primary"
+            ng-class="{active:mode.code}"
+            ng-click="openCode()">
+            Code
+        </md-button>
+    </div>
+
     <span flex></span>
 
     <md-button ng-click="save()"
@@ -20,12 +34,6 @@
         class="md-warn">
         <md-icon md-svg-icon="<%-get_icon('material/delete')%>"></md-icon>
         <span>Delete</span>
-    </md-button>
-
-    <md-button class="md-primary"
-        aria-label="Switch Source"
-        ng-click="openSource()">
-        Source
     </md-button>
 
 </div>

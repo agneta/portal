@@ -15,7 +15,6 @@
  *   limitations under the License.
  */
 (function() {
-
   agneta.directive('AgEditDataRemote', function(Data_Remote) {
     var vm = this;
     agneta.extend(vm, 'AgEditMainCtrl');
@@ -25,7 +24,5 @@
       mediaRoot: 'data',
       isRemote: true
     });
-
   });
-
 })();

@@ -28,12 +28,17 @@ module.exports = function(Model, app) {
   };
 
   Model.remoteMethod('list', {
-    description: 'Load all templates with optional limit',
+    description: 'List the files',
     accepts: [
       {
         arg: 'dir',
         type: 'string',
-        required: true
+        required: false
+      },
+      {
+        arg: 'marker',
+        type: 'number',
+        required: false
       },
       {
         arg: 'req',
@@ -53,6 +58,4 @@ module.exports = function(Model, app) {
       path: '/list'
     }
   });
-
-  return Model.list;
 };

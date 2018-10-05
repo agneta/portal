@@ -4,6 +4,10 @@ module.exports = function(Model, app) {
     return Promise.resolve()
       .then(function() {
         if (!options.data) {
+          if (!options.template) {
+            console.error(options);
+            return Promise.reject(new Error('Template is undefined'));
+          }
           return Model.__getTemplatePath(options.template);
         }
 
