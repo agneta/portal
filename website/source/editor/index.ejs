@@ -1,11 +1,8 @@
 <div layout="column"
   class="page-main"
-  flex="100"
   ng-class="{active:page}">
   <%-template('./toolbar')%>
   <div ag-include
-    layout="column"
-    flex="100"
     page="{{mode.page}}"></div>
 </div>
 <%-template('editor/messages')%>
