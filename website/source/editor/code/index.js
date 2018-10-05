@@ -16,11 +16,10 @@
  */
 
 /*global CodeMirror*/
+/*global jsyaml*/
 
 (function() {
-
-  agneta.directive('AgPageSourceCtrl', function($timeout, $element,$mdDialog, data) {
-
+  agneta.directive('AgEditorCode', function($timeout) {
     var myCodeMirror;
     var vm = this;
 
@@ -38,24 +37,62 @@
         lint: true
       });
 
-      loadData();
+      var changing = false;
+      myCodeMirror.on('changes', function() {
+        if (changing) {
+          return;
+        }
+        changing = true;
+        $timeout(function() {
+          onDone(myCodeMirror.getValue());
+          changing = false;
+        }, 1400);
+      });
 
+      loadData();
     }, 100);
 
+    vm.$watch('page', function(value) {
+      if (!value) {
+        return;
+      }
+      loadData();
+    });
+
     function loadData() {
-      myCodeMirror.setValue(data.getData());
+      if (!myCodeMirror) {
+        return;
+      }
+      myCodeMirror.setValue(getData());
       $timeout(function() {
         myCodeMirror.refresh();
       }, 100);
     }
 
-    vm.done = function() {
-      data.onDone(
-        myCodeMirror.getValue()
-      );
-      $mdDialog.hide();
-    };
+    function onDone(newVal) {
+      if (!vm.page) {
+        return;
+      }
+      var data;
+      try {
+        data = jsyaml.safeLoad(newVal, {
+          schema: jsyaml.DEFAULT_SAFE_SCHEMA
+        });
+      } catch (e) {
+        return;
+      }
+      vm.page.data = null;
 
+      $timeout(function() {
+        vm.page.data = data;
+      }, 100);
+    }
+    function getData() {
+      vm.clearHiddenData();
+      return jsyaml.dump(vm.page.data, {
+        skipInvalid: true,
+        schema: jsyaml.DEFAULT_SAFE_SCHEMA
+      });
+    }
   });
-
 })();

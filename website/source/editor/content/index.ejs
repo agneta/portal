@@ -1,18 +1,4 @@
-<div layout="column"
-    class="page-main"
-    ng-class="{active:page}">
-
-    <div class="heading"
-        layout="column"
-        layout-margin>
-        <%-template('./header-main')%>
-        <%-template('./header-page')%>
-    </div>
-
-    <div class="edit-gui"
-        ng-show="!sourceEnabled">
-        <%-template('editor/content/data')%>
-        <%-template('editor/content/fields')%>
-    </div>
-
+<div class="edit-gui">
+    <%-template('editor/content/data')%>
+    <%-template('editor/content/fields')%>
 </div>

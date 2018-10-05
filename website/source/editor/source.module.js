@@ -15,19 +15,21 @@
  *   limitations under the License.
  */
 
-/*global jsyaml:true*/
-
 module.exports = function(vm) {
   vm.mode = {};
 
   vm.openVisual = function() {
-    vm.mode = {};
-    vm.mode.visual = true;
+    vm.mode = {
+      page: 'editor/content',
+      visual: true
+    };
   };
 
   vm.openCode = function() {
-    vm.mode = {};
-    vm.mode.code = true;
+    vm.mode = {
+      page: 'editor/code',
+      code: true
+    };
     /*
     $mdDialog.open({
       partial: 'page-source',
