@@ -63,7 +63,7 @@ module.exports = function(Model, app) {
             templateData: templateData,
             item: item
           }).then(function(_relations) {
-            relations - _relations;
+            relations = _relations;
           })
         ]);
       })

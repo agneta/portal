@@ -148,9 +148,16 @@ module.exports = function(Model, app) {
           }
 
           var content = yaml.safeDump(pageData);
+          var fileName = template(page.location);
+          var fileNameParsed = fileName.split('/');
+          if (fileNameParsed.length != _.compact(fileNameParsed).length) {
+            console.log(
+              `Could not save file due to incorrect path: ${fileName}`
+            );
+            return;
+          }
           var outputPath =
-            path.join(webProject.paths.app.source, template(page.location)) +
-            '.yml';
+            path.join(webProject.paths.app.source, fileName) + '.yml';
 
           return fs.outputFile(outputPath, content);
         });

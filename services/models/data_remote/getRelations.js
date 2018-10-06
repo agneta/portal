@@ -10,23 +10,26 @@ module.exports = function(Model) {
         return;
       }
 
-      let itemId = item[relation.key];
-      if (!itemId) {
-        return;
-        //throw new Error(`Relation needs to have an ID at field: ${relation.key}`);
-      }
-
-      return Model.getTemplateModel(relation.template)
-        .then(function(model) {
-          return model.findById(itemId, {
-            fields: {
-              title: true,
-              name: true
-            }
+      return Promise.resolve()
+        .then(function() {
+          let itemId = item[relation.key];
+          if (!itemId) {
+            return;
+            //throw new Error(`Relation needs to have an ID at field: ${relation.key}`);
+          }
+          return Model.getTemplateModel(relation.template).then(function(
+            model
+          ) {
+            return model.findById(itemId, {
+              fields: {
+                title: true,
+                name: true
+              }
+            });
           });
         })
         .then(function(result) {
-          relations[relation.name] = result;
+          relations[relation.name] = result || {};
         });
     }).then(function() {
       return relations;
