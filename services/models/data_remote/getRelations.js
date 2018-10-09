@@ -1,10 +1,10 @@
 const Promise = require('bluebird');
 
-module.exports = function(Model) {
+module.exports = function(Model, app) {
   Model.getRelations = function(options) {
     let templateData = options.templateData;
     let item = options.item;
-    let relations = [];
+    let relations = {};
     return Promise.map(templateData.relations, function(relation) {
       if (relation.type != 'relation-belongsTo') {
         return;
@@ -22,6 +22,7 @@ module.exports = function(Model) {
           ) {
             return model.findById(itemId, {
               fields: {
+                id: true,
                 title: true,
                 name: true
               }
@@ -29,6 +30,7 @@ module.exports = function(Model) {
           });
         })
         .then(function(result) {
+          result = app.lngScan(result);
           relations[relation.name] = result || {};
         });
     }).then(function() {

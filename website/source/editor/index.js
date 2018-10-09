@@ -133,12 +133,15 @@ agneta.directive('AgEditMainCtrl', function(
   };
 
   vm.toggleView = function(data) {
-    console.log(data);
+    //console.log(data);
     let hidden = !data._expanded;
     let value = helpers.dataValue(data);
 
     if (_.isArray(value)) {
       for (let item of value) {
+        if (!item) {
+          continue;
+        }
         if (item.__id) {
           item.__hidden = hidden;
         }
@@ -148,6 +151,9 @@ agneta.directive('AgEditMainCtrl', function(
     if (_.isObject(value)) {
       for (let key in value) {
         let item = value[key];
+        if (!item) {
+          continue;
+        }
         if (item.__id) {
           item.__hidden = hidden;
         }

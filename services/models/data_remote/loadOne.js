@@ -18,7 +18,7 @@ const Promise = require('bluebird');
 const _ = require('lodash');
 
 module.exports = function(Model, app) {
-  Model.loadOne = function(id, template) {
+  Model.loadOne = function(id, template, req) {
     let templateData;
     let item;
     let log;
@@ -61,7 +61,8 @@ module.exports = function(Model, app) {
           }),
           Model.getRelations({
             templateData: templateData,
-            item: item
+            item: item,
+            req: req
           }).then(function(_relations) {
             relations = _relations;
           })

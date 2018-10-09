@@ -62,13 +62,15 @@
 - data:
     scripts:
       - "ui/explorer"
+      - media/explorer
     styles:
+      - media/explorer
       - "ui/explorer"
     __templates:
       - id: media-item-menu.html
         path: ui/explorer/item-menu
   templates:
-    - "dialog/select"
+    - dialog/select
     - media/explorer
     - editor
 - data:
