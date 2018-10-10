@@ -18,7 +18,7 @@ module.exports = function(Model, app) {
           path: templatePath
         });
 
-        return app.edit.loadTemplate(templateOptions);
+        return app.web.services.edit.loadTemplate(templateOptions);
       });
   };
 
