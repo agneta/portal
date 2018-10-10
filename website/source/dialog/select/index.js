@@ -20,7 +20,7 @@ agneta.directive('AgMediaSelect', function(data, $mdDialog, AgMediaExplorer) {
   agneta.extend(vm, 'AgDialogCtrl');
 
   vm.startingLocation = data.file.dir;
-
+  vm.locationDisabled = true;
   vm.openObject = function(object) {
     if (data.onSelect) {
       data.onSelect(object);

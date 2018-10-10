@@ -62,6 +62,18 @@
       }, 100);
     }
 
+    vm.$watch('page', function(value, oldValue) {
+      oldValue = oldValue || {};
+      if (!value) {
+        return;
+      }
+      if (value.id == oldValue.id) {
+        //console.log('same page');
+        return;
+      }
+      loadData();
+    });
+
     function onDone(newVal) {
       if (!vm.page) {
         return;

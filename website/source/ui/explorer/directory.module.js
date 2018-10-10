@@ -31,10 +31,12 @@ module.exports = function(options) {
   function readdir() {
     var dir = vm.dir;
 
-    if (dir.location.length) {
-      $location.search('location', dir.location);
-    } else {
-      $location.search('location', null);
+    if (!vm.locationDisabled) {
+      if (dir.location.length) {
+        $location.search('location', dir.location);
+      } else {
+        $location.search('location', null);
+      }
     }
 
     objects = [];

@@ -37,7 +37,6 @@ module.exports = function(Model, app) {
         });
 
         //console.log(require('util').inspect(displayOptions, { depth: null }));
-
         if (options.id) {
           return model
             .findById(options.id, displayOptions)
@@ -104,7 +103,7 @@ module.exports = function(Model, app) {
     });
 
     function getItem(labelOriginal) {
-      var value;
+      var value = null;
       var label = labels[labelOriginal] || labelOriginal;
       var labelName = labelOriginal;
       if (_.isObject(label)) {
@@ -112,6 +111,7 @@ module.exports = function(Model, app) {
         label = label.field || labelOriginal;
       }
       var field = templateData.field[label] || {};
+      var type = field.type;
 
       return Promise.resolve()
         .then(function() {
@@ -134,14 +134,14 @@ module.exports = function(Model, app) {
             req: req,
             templateData: field.relation.templateData
           }).then(function(display) {
-            value = display;
+            console.log(display, label);
+            value = display.title;
           });
         })
         .then(function() {
           if (!value) {
             value = item[label];
           }
-          var type = field.type;
 
           if (!value) {
             return;
@@ -160,14 +160,6 @@ module.exports = function(Model, app) {
                 _.get(_.find(field.options, { value: value }), 'title') ||
                 value;
               value = app.lng(value, req);
-              break;
-            case 'relation-belongsTo':
-              //console.log('--------------');
-              //console.log(value,labelName);
-              value = value[labelName];
-              if (value && value.value) {
-                value = value.value;
-              }
               break;
             default:
               if (_.isObject(value)) {
