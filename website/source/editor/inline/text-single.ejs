@@ -1,5 +1,12 @@
 <md-input-container class="type-inline">
     <label></label>
-    <input <%-template('editor/validators')%> aria-label="{{field.name}}" ng-model="data.__value[edit.lang]" ng-keypress="onFieldChange(data)" ng-init="registerInput(data)" md-select-on-focus placeholder="{{edit.lng(data.__value)}}">
+    <input spellcheck="true"
+        <%-template('editor/validators')%>
+        aria-label="{{field.name}}"
+        ng-model="data.__value[edit.lang]"
+        ng-keypress="onFieldChange(data)"
+        ng-init="registerInput(data)"
+        md-select-on-focus
+        placeholder="{{edit.lng(data.__value)}}">
     <div ng-include="'data-messages.html'"></div>
 </md-input-container>

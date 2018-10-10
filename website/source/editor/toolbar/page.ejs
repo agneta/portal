@@ -6,10 +6,13 @@
     %>
 
 <div layout="row"
+    layout-align="start start"
     class="ag-margin page"
     ng-if="page.paths.length">
 
-    <div layout="column">
+    <div layout="column"
+        class="ag-margin">
+        <p>Pages:</p>
         <a class="md-primary path ag-margin"
             ng-repeat="item in page.paths"
             ng-href="{{url('services/preview/real-time',edit.lang,item.path)}}"
@@ -24,18 +27,21 @@
                     Source: {{item.source}}
                 </span>
             </div>
-            <md-icon md-svg-src="<%-get_icon('material/open-in-new')%>"></md-icon>
         </a>
     </div>
 
     <span flex="auto"></span>
-    <md-switch ng-model="page.data.skip">
-        Draft
-    </md-switch>
+    <div layout="row"
+        layout-align="start center">
+        <md-switch ng-model="page.data.skip">
+            Draft
+        </md-switch>
 
-    <md-button>
-        Publish
-    </md-button>
+        <md-button>
+            Publish
+        </md-button>
+    </div>
+
 
 
 </div>
