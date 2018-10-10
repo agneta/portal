@@ -23,6 +23,12 @@
 
     agneta.extend(vm, 'AgDialogCtrl');
 
+    if (scopeEdit.template) {
+      vm.formSubmitFields = {
+        template: scopeEdit.template.id
+      };
+    }
+
     vm.submit = function() {
       vm.loading = true;
 
