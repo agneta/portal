@@ -84,16 +84,25 @@ module.exports = function(Model, app) {
           if (!page) {
             continue;
           }
-          let pagePath = _.template(page.location)({
+          let sourcePath = _.template(page.location)({
             page: result.page.data,
             relation: relations
           });
+          let pagePath = _.template(_.get(page, 'data.path') || page.location)({
+            page: result.page.data,
+            relation: relations
+          });
+
           pagePath = pagePath.split('/');
           if (_.last(pagePath) == 'index') {
             pagePath.pop();
           }
           pagePath = pagePath.join('/');
-          paths.push(pagePath);
+
+          paths.push({
+            source: `${sourcePath}.yml`,
+            path: pagePath
+          });
         }
 
         result.page.paths = paths;

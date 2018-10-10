@@ -6,19 +6,24 @@
     %>
 
 <div layout="row"
-    class="ag-margin"
+    class="ag-margin page"
     ng-if="page.paths.length">
 
     <div layout="column">
-        <a class="md-primary"
-            ng-repeat="path in page.paths"
-            ng-href="{{url('services/preview/real-time',edit.lang,path)}}"
+        <a class="md-primary path ag-margin"
+            ng-repeat="item in page.paths"
+            ng-href="{{url('services/preview/real-time',edit.lang,item.path)}}"
             target="_blank"
             layout="row"
             layout-align="start center">
-            <span class="title">
-                {{path}}
-            </span>
+            <div layout="column">
+                <span class="title">
+                    {{item.path}}
+                </span>
+                <span class="source">
+                    Source: {{item.source}}
+                </span>
+            </div>
             <md-icon md-svg-src="<%-get_icon('material/open-in-new')%>"></md-icon>
         </a>
     </div>
