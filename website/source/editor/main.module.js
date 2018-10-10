@@ -20,6 +20,7 @@ module.exports = function(options) {
   var $rootScope = options.$rootScope;
   var helpers = options.helpers;
   var $location = options.$location;
+  var $routeParams = options.$routeParams;
   var $timeout = options.$timeout;
   var $mdDialog = options.$mdDialog;
   var scopeEdit = options.scopeEdit;
@@ -59,7 +60,8 @@ module.exports = function(options) {
         helpers.structureData(vm.template, data);
 
         $location.search({
-          id: id
+          id: id,
+          location: template
         });
 
         vm.work = null;
@@ -128,13 +130,21 @@ module.exports = function(options) {
     });
   };
 
-  vm.$watch('dirs', function(value) {
-    if (!value) {
-      return;
+  vm.$watch('dir', function(value) {
+    let location = null;
+    if (value) {
+      location = value.location;
+      if (!location.length) {
+        location = null;
+      }
+      let template = vm.template || {};
+      template.id = location;
+      vm.template = template;
     }
-    vm.template = {
-      id: value.join('')
-    };
+    $location.search({
+      id: location != $routeParams.location ? null : $routeParams.id,
+      location: location
+    });
   });
 
   (function() {

@@ -52,13 +52,6 @@
       loadData();
     }, 100);
 
-    vm.$watch('page', function(value) {
-      if (!value) {
-        return;
-      }
-      loadData();
-    });
-
     function loadData() {
       if (!myCodeMirror) {
         return;

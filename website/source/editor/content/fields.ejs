@@ -1,6 +1,6 @@
 <div ng-form="dataForm"
     ng-if="page.data"
-    ng-init="data=page.data"
+    ng-init="data=page.data;toggleView(data)"
     ng-class="{contracted:data._expanded}"
     class="md-padding data-node page-data">
 
