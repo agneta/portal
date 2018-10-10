@@ -42,8 +42,12 @@
     .data-node {
       .header {
         .field-label {
-          font-weight: bold;
           width: 150px;
+          line-height: 1.8em;
+
+          &:hover {
+            color: #126477;
+          }
 
           md-icon {
             margin: 0;
@@ -60,8 +64,7 @@
     .md-input, .ql-editor {
       padding: 20px 10px;
       border: none;
-      background: #5d5d5d;
-      color: #fff;
+      background: #ececec;
       border-radius: 2px;
 
       &::placeholder {

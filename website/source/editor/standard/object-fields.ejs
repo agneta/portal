@@ -1,6 +1,10 @@
-<div ng-repeat="(key,value) in data.__value" ng-if="getField(field,key)" ng-init="parentField=field;parent=data; data = value;name=key; field = getField(field,key)">
+<div ng-repeat="(key,value) in data.__value"
+  ng-if="getField(field,key)"
+  ng-init="parentField=field;parent=data; data = value;name=key; field = getField(field,key)">
 
-  <div layout="row" edit-item-menu class="header" layout-align="left center">
+  <div layout="row"
+    class="header"
+    layout-align="left center">
     <%-template('editor/label',{model:'field.title||key'})%>
     <%-template('editor/fields-inline')%>
     <%-template('editor/contributors')%>
@@ -9,16 +13,19 @@
   <%-template('editor/fields-standard')%>
 
 </div>
-<div layout="row" layout-wrap class="add-value-row">
+<div layout="row"
+  layout-wrap
+  class="add-value-row">
   <md-button class="property"
-  ng-click="addValue(field,data,key)"
-  ng-init="
+    ng-click="addValue(field,data,key)"
+    ng-init="
   key=value.name;
   objectField(value,field,data,key);
   "
-  ng-repeat="(index,value) in field.fields"
-  ng-show="!value.hidden&&!data.__value[key]">
-    <md-icon ng-if="value.icon" md-svg-icon="{{get_icon(value.icon)}}"></md-icon>
+    ng-repeat="(index,value) in field.fields"
+    ng-show="!value.hidden&&!data.__value[key]">
+    <md-icon ng-if="value.icon"
+      md-svg-icon="{{get_icon(value.icon)}}"></md-icon>
     <span>{{value.title||key}}</span>
   </md-button>
 </div>

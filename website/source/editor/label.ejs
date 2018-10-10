@@ -1,10 +1,16 @@
-<div class="field-label" layout="row" layout-align="start center">
+<div edit-item-menu
+    class="field-label"
+    layout="row"
+    layout-align="start center">
 
-<%if(locals.prefix){%><span><%-locals.prefix%></span><%}%>
+    <%if(locals.prefix){%><span>
+        <%-locals.prefix%></span>
+    <%}%>
 
-<div layout="column">
-<label>{{<%-locals.model%>}}</label>
-<span ng-if="field.readonly">readonly</span>
-</div>
+    <div layout="column">
+        <label>{{
+            <%-locals.model%>}}</label>
+        <span ng-if="field.readonly">readonly</span>
+    </div>
 
 </div>

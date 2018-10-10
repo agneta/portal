@@ -14,8 +14,7 @@
         ng-init="key=field.name;data=page.data[key];parent=page.data;"
         class="data-node"
         ng-class="{readonly:field.readonly,contracted:data._expanded}">
-        <div edit-item-menu
-            layout="row"
+        <div layout="row"
             class="header"
             layout-align="left center">
             <%-template('editor/label',{model:'field.title||key'})%>
