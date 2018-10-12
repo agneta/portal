@@ -118,17 +118,29 @@ module.exports = function(Model, app) {
           return;
         }
 
-        let fields = ['title', 'cover', 'name', 'description', 'skip'];
+        let fieldsBase = ['title', 'cover', 'name', 'description', 'skip'];
 
         return Promise.map(pages, function(page) {
           if (!page) {
             return;
           }
-          if (page.fields) {
-            fields = fields.concat(page.fields);
-          }
-
+          let fields = page.fields || [];
+          let fieldMap = {};
+          fields = fields.map(function(field) {
+            let parsed = field.split('@');
+            if (parsed[1]) {
+              fieldMap[parsed[0]] = parsed[1];
+              return parsed[0];
+            }
+            return field;
+          });
+          fields = fieldsBase.concat(fields);
           var pageData = _.pick(data, fields);
+          for (var key in fieldMap) {
+            var name = fieldMap[key];
+            pageData[name] = pageData[key];
+            delete pageData[key];
+          }
           pageData = _.extend({}, pageData, page.data);
 
           if (pageData.path) {

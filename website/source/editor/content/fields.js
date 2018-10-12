@@ -41,6 +41,16 @@ module.exports = function(vm, helpers) {
     }
   };
 
+  vm.onArrayField = function(field, data) {
+    data = data.__value || data;
+    var diff = field.min - data.length;
+    if (field.min && diff > 0) {
+      var key = field.fields[0].name;
+      for (var i = 0; i < diff; i++) {
+        vm.addValue(field, data, key);
+      }
+    }
+  };
   vm.addValue = function(field, parent, key) {
     var parentValue = parent.__value || parent;
 

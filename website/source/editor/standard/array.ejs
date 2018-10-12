@@ -1,6 +1,7 @@
 <div class="field array ag-margin"
   data-as-sortable="dragControlListeners"
-  data-ng-model="data.__value">
+  data-ng-model="data.__value"
+  ng-init="onArrayField(field,data)">
 
   <div ng-repeat="(key,child) in data.__value"
     ng-init="childField=getField(field,child);"
@@ -27,7 +28,8 @@
   <md-divider>
   </md-divider>
 
-  <div class="add-value-row"
+  <div ng-if="!field.hiddenFields"
+    class="add-value-row"
     layout="row"
     layout-wrap>
     <md-button class="property"
