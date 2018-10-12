@@ -23,8 +23,6 @@
     var myCodeMirror;
     var vm = this;
 
-    agneta.extend(vm, 'AgDialogCtrl');
-
     setTimeout(function() {
       var editorElm = document.querySelector('#source-editor');
       //console.log(editorElm);
@@ -61,18 +59,6 @@
         myCodeMirror.refresh();
       }, 100);
     }
-
-    vm.$watch('page', function(value, oldValue) {
-      oldValue = oldValue || {};
-      if (!value) {
-        return;
-      }
-      if (value.id == oldValue.id) {
-        //console.log('same page');
-        return;
-      }
-      loadData();
-    });
 
     function onDone(newVal) {
       if (!vm.page) {
