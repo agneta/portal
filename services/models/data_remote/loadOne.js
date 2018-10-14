@@ -80,9 +80,9 @@ module.exports = function(Model, app) {
         };
 
         let pages = _.concat([], templateData.page, templateData.pages);
-        for (var page of pages) {
+        return Promise.map(pages, function(page) {
           if (!page) {
-            continue;
+            return;
           }
           let sourcePath = _.template(page.location)({
             page: result.page.data,
@@ -103,10 +103,10 @@ module.exports = function(Model, app) {
             source: `${sourcePath}.yml`,
             path: pagePath
           });
-        }
-
-        result.page.paths = paths;
-        return Model.loadTemplate(template);
+        }).then(function() {
+          result.page.paths = paths;
+          return Model.loadTemplate(template);
+        });
       })
       .then(function(template) {
         result.template = template;

@@ -122,6 +122,17 @@ module.exports = function(util, dir) {
         title: 'Dependencies for ' + dir.name
       });
 
+      var copyDict = {};
+      function copy(source, target) {
+        return Promise.resolve().then(function() {
+          if (copyDict[target]) {
+            return;
+          }
+          copyDict[target] = true;
+          return fs.copy(source, target);
+        });
+      }
+
       return Promise.map(
         libs,
         function(lib) {
@@ -135,9 +146,7 @@ module.exports = function(util, dir) {
 
               var sourcePath = path.join(lib.dir, file);
               var destPath = path.join(destDir, rule.dir || '', parsed.base);
-
-              return fs
-                .copy(sourcePath, destPath)
+              return copy(sourcePath, destPath)
                 .then(function() {
                   var parsedPath = path.parse(sourcePath);
                   var parsed = path.parse(parsedPath.name);
@@ -152,7 +161,7 @@ module.exports = function(util, dir) {
                           rule.dir || '',
                           parsed.base
                         );
-                        fs.copy(pathCheck, pathCheckOut);
+                        return copy(pathCheck, pathCheckOut);
                       }
                     });
                   }
