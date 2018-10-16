@@ -1,7 +1,11 @@
 const Promise = require('bluebird');
+const _ = require('lodash');
 
 module.exports = function(Model, app) {
   Model.getRelations = function(options) {
+    _.defaults(options, {
+      scope: {}
+    });
     let templateData = options.templateData;
     let item = options.item;
     let relations = {};
@@ -20,16 +24,29 @@ module.exports = function(Model, app) {
           return Model.getTemplateModel(relation.template).then(function(
             model
           ) {
-            return model.findById(itemId, {
-              fields: {
-                id: true,
-                title: true,
-                name: true
-              }
+            let findOptions = _.defaults(options.scope[relation.name], {
+              include: [],
+              fields: []
             });
+
+            findOptions.fields = findOptions.fields.concat(['id', 'title']);
+            findOptions.fields = _.uniq(findOptions.fields);
+
+            findOptions.include.map(function(item) {
+              var templateRelation = _.find(relation.templateData.relations, {
+                name: item.relation
+              });
+              if (!templateRelation) {
+                return;
+              }
+              findOptions.fields.push(templateRelation.key);
+            });
+
+            return model.findById(itemId, findOptions);
           });
         })
         .then(function(result) {
+          result = result.__data;
           result = app.lngScan(result);
           relations[relation.name] = result || {};
         });

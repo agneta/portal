@@ -160,7 +160,7 @@ module.exports = function(Model, app) {
           }
 
           var content = yaml.safeDump(pageData);
-          var fileName = template(page.location);
+          var fileName = template(page.location) || '';
           var fileNameParsed = fileName.split('/');
           if (fileNameParsed.length != _.compact(fileNameParsed).length) {
             console.log(
@@ -175,10 +175,16 @@ module.exports = function(Model, app) {
         });
 
         function template(content) {
-          return _.template(content)({
-            page: data,
-            relation: relations
-          });
+          var result;
+          try {
+            result = _.template(content)({
+              page: data,
+              relation: relations
+            });
+          } catch (err) {
+            result = null;
+          }
+          return result;
         }
       });
   };
