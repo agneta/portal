@@ -178,6 +178,7 @@ module.exports = function(options) {
           .$promise.then(function(result) {
             if (result.error) {
               vm.error = result.error;
+              return;
             }
             if (result.page) {
               onPageLoaded(result);

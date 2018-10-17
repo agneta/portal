@@ -29,7 +29,7 @@ module.exports = function(Model, app) {
     let templateData;
     let model;
     let item;
-    let relations;
+    let templateLocals;
     return Promise.resolve()
       .then(function() {
         return Model.__loadTemplateData({
@@ -104,8 +104,13 @@ module.exports = function(Model, app) {
           templateData: templateData
         });
       })
-      .then(function(_relations) {
-        relations = _relations;
+      .then(function(relationsResult) {
+        templateLocals = _.defaultsDeep(
+          {},
+          item.__data,
+          relationsResult.locals
+        );
+
         let pages = templateData.pages || [];
         if (templateData.page) {
           pages.push(templateData.page);
@@ -164,7 +169,7 @@ module.exports = function(Model, app) {
           var fileNameParsed = fileName.split('/');
           if (fileNameParsed.length != _.compact(fileNameParsed).length) {
             console.log(
-              `Could not save file due to incorrect path: ${fileName}`
+              `Could not save file due to incorrect path: ${page.location}`
             );
             return;
           }
@@ -177,10 +182,7 @@ module.exports = function(Model, app) {
         function template(content) {
           var result;
           try {
-            result = _.template(content)({
-              page: data,
-              relation: relations
-            });
+            result = _.template(content)(templateLocals);
           } catch (err) {
             result = null;
           }
@@ -191,6 +193,13 @@ module.exports = function(Model, app) {
         return Model.loadOne(id, template);
       })
       .catch(function(error) {
+        console.log(error);
+        if (_.isError(error)) {
+          error = {
+            message: error.message,
+            stack: error.stack
+          };
+        }
         return {
           error: error
         };

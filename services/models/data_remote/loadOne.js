@@ -22,12 +22,11 @@ module.exports = function(Model, app) {
     let templateData;
     let item;
     let paths = [];
-    let templateProps = [];
     let log;
     let model;
     let relations = {};
-    let templateLocals = {};
     let result;
+    let templateLocals;
 
     return Promise.resolve()
       .then(function() {
@@ -56,17 +55,13 @@ module.exports = function(Model, app) {
         //console.log(require('util').inspect(item, { depth: null }));
 
         let pages = _.concat([], templateData.page, templateData.pages);
-        let parentScope = {};
-        let char = '$';
 
         pages.map(function(page) {
           if (!page) {
             return;
           }
-          let sourcePath = checkTemplate(page.location);
-          let pagePath = checkTemplate(
-            _.get(page, 'data.path') || page.location
-          );
+          let sourcePath = page.location;
+          let pagePath = _.get(page, 'data.path');
 
           if (pagePath) {
             pagePath = pagePath.split('/');
@@ -92,57 +87,12 @@ module.exports = function(Model, app) {
           Model.getRelations({
             templateData: templateData,
             item: item,
-            req: req,
-            scope: parentScope
-          }).then(function(_relations) {
-            relations = _relations;
+            req: req
+          }).then(function(result) {
+            relations = result.relations;
+            templateLocals = result.locals;
           })
         ]);
-
-        function checkTemplate(data) {
-          if (!data) {
-            return;
-          }
-          var props = data.match(/(?<=\$\{)(.+?)(?=\})/g);
-          templateProps = templateProps.concat(props);
-          templateProps = _.uniq(templateProps);
-          props.map(function(prop) {
-            _.set(templateLocals, prop, '???');
-
-            let parts = prop.split('.');
-            if (!parts[0][0] == char) {
-              return;
-            }
-
-            let scopeName = parts.shift();
-            scopeName = scopeName.split(char)[1];
-
-            if (!scopeName) {
-              return;
-            }
-            let scope = (parentScope[scopeName] = {
-              include: [],
-              fields: []
-            });
-
-            parts.map(function(part) {
-              if (part[0] == char) {
-                let childScope = {
-                  include: [],
-                  fields: []
-                };
-                scope.include.push({
-                  relation: part.split(char)[1],
-                  scope: childScope
-                });
-                scope = childScope;
-              } else {
-                scope.fields.push(part);
-              }
-            });
-          });
-          return data;
-        }
       })
       .then(function() {
         result = {
@@ -153,15 +103,6 @@ module.exports = function(Model, app) {
           },
           relations: relations
         };
-
-        templateProps.map(function(templateProp) {
-          let sourceProp = templateProp.split('$').join('');
-          let value = _.get(relations, sourceProp);
-          if (!value) {
-            return;
-          }
-          _.set(templateLocals, templateProp, value);
-        });
 
         templateLocals = _.defaultsDeep({}, result.page.data, templateLocals);
         paths.map(function(pagePath) {
