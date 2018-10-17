@@ -164,7 +164,6 @@ module.exports = function(Model, app) {
         });
 
         templateLocals = _.defaultsDeep({}, result.page.data, templateLocals);
-        console.log(templateLocals);
         paths.map(function(pagePath) {
           pagePath.source = _.template(pagePath.source)(templateLocals);
           pagePath.path = _.template(pagePath.path)(templateLocals);

@@ -7,7 +7,6 @@ module.exports = function(shared) {
   };
 
   return function() {
-    console.log('init!');
     AgExplorer.init({
       vm: vm,
       config: {

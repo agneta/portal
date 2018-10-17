@@ -105,9 +105,7 @@ module.exports = function(Model, app) {
     function getItem(labelOriginal) {
       var value = null;
       var label = labels[labelOriginal] || labelOriginal;
-      var labelName = labelOriginal;
       if (_.isObject(label)) {
-        labelName = label.label || labelName;
         label = label.field || labelOriginal;
       }
       var field = templateData.field[label] || {};
@@ -134,7 +132,6 @@ module.exports = function(Model, app) {
             req: req,
             templateData: field.relation.templateData
           }).then(function(display) {
-            console.log(display, label);
             value = display.title;
           });
         })

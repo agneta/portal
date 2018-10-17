@@ -186,6 +186,14 @@ module.exports = function(Model, app) {
           }
           return result;
         }
+      })
+      .then(function() {
+        return Model.loadOne(id, template);
+      })
+      .catch(function(error) {
+        return {
+          error: error
+        };
       });
   };
 

@@ -40,37 +40,7 @@ module.exports = function(options) {
       id: id,
       template: template
     })
-      .$promise.then(function(result) {
-        var data = result.page.data;
-        vm.template = result.template;
-
-        if (vm.template) {
-          for (var i in vm.template.fields) {
-            var field = vm.template.fields[i];
-            data[field.name] = data[field.name] || helpers.fieldValue(field);
-          }
-        }
-
-        for (var name in result.relations) {
-          result.relations[name] = helpers.checkPage(result.relations[name]);
-        }
-
-        vm.relations = result.relations;
-        vm.pagePath = result.page.path;
-        helpers.structureData(vm.template, data);
-
-        $location.search({
-          id: id,
-          location: template
-        });
-
-        vm.work = null;
-        vm.page = {};
-
-        $timeout(function() {
-          vm.page = result.page;
-        }, 300);
-      })
+      .$promise.then(onPageLoaded)
       .finally(function() {
         $timeout(function() {
           $rootScope.loadingMain = pageLoading = false;
@@ -78,6 +48,38 @@ module.exports = function(options) {
       })
       .catch(console.error);
   };
+
+  function onPageLoaded(result) {
+    var data = result.page.data;
+    vm.template = result.template;
+
+    if (vm.template) {
+      for (var i in vm.template.fields) {
+        var field = vm.template.fields[i];
+        data[field.name] = data[field.name] || helpers.fieldValue(field);
+      }
+    }
+
+    for (var name in result.relations) {
+      result.relations[name] = helpers.checkPage(result.relations[name]);
+    }
+
+    vm.relations = result.relations;
+    vm.pagePath = result.page.path;
+    helpers.structureData(vm.template, data);
+
+    $location.search({
+      id: result.page.id,
+      location: result.template.id
+    });
+
+    vm.work = null;
+    vm.page = {};
+
+    $timeout(function() {
+      vm.page = result.page;
+    }, 300);
+  }
 
   vm.pageActive = function(id) {
     if (vm.page) {
@@ -150,7 +152,7 @@ module.exports = function(options) {
   (function() {
     var pending = false;
 
-    vm.save = function(autosave) {
+    vm.save = function() {
       if (!vm.page) {
         return;
       }
@@ -159,6 +161,7 @@ module.exports = function(options) {
         return;
       }
 
+      vm.error = null;
       $rootScope.loadingMain = true;
       pending = true;
 
@@ -173,9 +176,13 @@ module.exports = function(options) {
           data: vm.page.data
         })
           .$promise.then(function(result) {
-            if (!autosave) {
-              helpers.toast(result.message || 'Changes saved');
+            if (result.error) {
+              vm.error = result.error;
             }
+            if (result.page) {
+              onPageLoaded(result);
+            }
+            helpers.toast(result.message || 'Changes saved');
           })
           .finally(function() {
             $rootScope.loadingMain = false;
