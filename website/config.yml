@@ -1,8 +1,8 @@
 #-----------------------------------------------
 
 title:
-  en: 'Portal'
-  gr: 'Δικτυακή Πύλη'
+  en: "Portal"
+  gr: "Δικτυακή Πύλη"
 subtitle:
   gr: "All tools in one place"
 
@@ -17,9 +17,6 @@ languages_toolbar: false
 languages_sidebar: false
 services: true
 lockSidebar: false
-menu:
-  side: true
-  top: false
 
 #-----------------------------------------------
 
@@ -27,18 +24,18 @@ account:
   menu:
     - account
 
-toolbar:
+menu:
   image: false
-  icon: 'icons/agneta/logo'
+  icon: "icons/agneta/logo"
   title: true
 
 #-----------------------------------------------
 
-recaptcha_key: ''
-gmaps_key: ''
-disqus_shortname: ''
-google_analytics: ''
-google_maps: ''
+recaptcha_key: ""
+gmaps_key: ""
+disqus_shortname: ""
+google_analytics: ""
+google_maps: ""
 
 #-----------------------------------------------
 
@@ -48,7 +45,6 @@ authorization:
 minify:
   html: true
   js: false
-
 
 #-----------------------------------------------
 
