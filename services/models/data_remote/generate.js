@@ -10,9 +10,8 @@ module.exports = function(Model, app) {
   Model.generate = function(options) {
     let item = options.item;
     let templateData = options.templateData;
-    let data = item.__data;
+    let data = JSON.parse(JSON.stringify(item.__data));
     let templateLocals;
-
     return Promise.resolve()
       .then(function() {
         return Model.getRelations({
@@ -21,11 +20,7 @@ module.exports = function(Model, app) {
         });
       })
       .then(function(relationsResult) {
-        templateLocals = _.defaultsDeep(
-          {},
-          item.__data,
-          relationsResult.locals
-        );
+        templateLocals = _.defaultsDeep({}, data, relationsResult.locals);
 
         let pages = templateData.pages || [];
         if (templateData.page) {
