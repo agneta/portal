@@ -36,7 +36,6 @@ module.exports = function(Model, app) {
           order: order
         });
 
-        //console.log(require('util').inspect(displayOptions, { depth: null }));
         if (options.id) {
           return model
             .findById(options.id, displayOptions)
@@ -81,8 +80,6 @@ module.exports = function(Model, app) {
       id: item.id,
       metadata: []
     };
-
-    //console.log(item, labels);
 
     return Promise.all([
       Promise.map(['title', 'subtitle', 'image'], function(name) {
