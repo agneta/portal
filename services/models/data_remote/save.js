@@ -16,20 +16,15 @@
  */
 const _ = require('lodash');
 const diff = require('deep-diff').diff;
-const yaml = require('js-yaml');
-const path = require('path');
-const fs = require('fs-extra');
 const Promise = require('bluebird');
 
 module.exports = function(Model, app) {
   var clientHelpers = app.client.app.locals;
-  var webProject = app.web.project;
 
   Model.save = function(id, template, data, req) {
     let templateData;
     let model;
     let item;
-    let templateLocals;
     return Promise.resolve()
       .then(function() {
         return Model.__loadTemplateData({
@@ -88,7 +83,8 @@ module.exports = function(Model, app) {
         }
         //console.log(data);
 
-        return item.updateAttributes(data).then(function(item) {
+        return item.updateAttributes(data).then(function(_item) {
+          item = _item;
           return app.models.History.add({
             model: model,
             data: data,
@@ -99,98 +95,10 @@ module.exports = function(Model, app) {
         });
       })
       .then(function() {
-        return Model.getRelations({
+        return Model.generate({
           item: item,
           templateData: templateData
         });
-      })
-      .then(function(relationsResult) {
-        templateLocals = _.defaultsDeep(
-          {},
-          item.__data,
-          relationsResult.locals
-        );
-
-        let pages = templateData.pages || [];
-        if (templateData.page) {
-          pages.push(templateData.page);
-        }
-        if (!pages.length) {
-          return;
-        }
-
-        if (!_.isString(data.name)) {
-          return;
-        }
-
-        let fieldsBase = ['title', 'cover', 'name', 'description', 'skip'];
-
-        return Promise.map(pages, function(page) {
-          if (!page) {
-            return;
-          }
-          let fields = page.fields || [];
-          let fieldMap = {};
-          fields = fields.map(function(field) {
-            let parsed = field.split('@');
-            if (parsed[1]) {
-              fieldMap[parsed[0]] = parsed[1];
-              return parsed[0];
-            }
-            return field;
-          });
-          fields = fieldsBase.concat(fields);
-          var pageData = _.pick(data, fields);
-          for (var key in fieldMap) {
-            var name = fieldMap[key];
-            pageData[name] = pageData[key];
-            delete pageData[key];
-          }
-          pageData = _.extend({}, pageData, page.data);
-
-          for (let key in pageData) {
-            let value = pageData[key];
-            if (_.isString(value)) {
-              pageData[key] = template(value);
-            }
-          }
-
-          if (page.viewData) {
-            pageData.viewData = _.pick(
-              _.extend(
-                {
-                  id: id
-                },
-                data
-              ),
-              page.viewData
-            );
-          }
-
-          var content = yaml.safeDump(pageData);
-          var fileName = template(page.location) || '';
-          var fileNameParsed = fileName.split('/');
-          if (fileNameParsed.length != _.compact(fileNameParsed).length) {
-            console.log(
-              `Could not save file due to incorrect path: ${page.location}`
-            );
-            return;
-          }
-          var outputPath =
-            path.join(webProject.paths.app.source, fileName) + '.yml';
-
-          return fs.outputFile(outputPath, content);
-        });
-
-        function template(content) {
-          var result;
-          try {
-            result = _.template(content)(templateLocals);
-          } catch (err) {
-            result = null;
-          }
-          return result;
-        }
       })
       .then(function() {
         return Model.loadOne(id, template);

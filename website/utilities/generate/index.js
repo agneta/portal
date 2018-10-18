@@ -17,13 +17,16 @@
 var Promise = require('bluebird');
 
 module.exports = function(util) {
-
   return {
     run: function(options) {
-
       options.type = options.type || {};
 
       return Promise.resolve()
+        .then(function() {
+          if (options.type.pages) {
+            return require('./pages')(util, options);
+          }
+        })
         .then(function() {
           if (options.type.dependencies) {
             return require('./dependencies')(util);
@@ -34,40 +37,57 @@ module.exports = function(util) {
             return require('./scripts')(util, options);
           }
         });
-
     },
-    parameters: [{
-      name: 'type',
-      title: 'What to generate?',
-      type: 'checkboxes',
-      values: [{
-        name: 'dependencies',
-        title: 'Dependencies'
-      }, {
-        name: 'scripts',
-        title: 'Scripts'
-      }]
-    },
-    {
-      name: 'script',
-      title: {
-        en: 'Select what scripts to generate:'
+    parameters: [
+      {
+        name: 'type',
+        title: 'What to generate?',
+        type: 'checkboxes',
+        values: [
+          {
+            name: 'pages',
+            title: 'Pages'
+          },
+          {
+            name: 'dependencies',
+            title: 'Dependencies'
+          },
+          {
+            name: 'scripts',
+            title: 'Scripts'
+          }
+        ]
       },
-      if: 'type.scripts',
-      type: 'checkboxes',
-      values: [{
-        name: 'bundles',
+      {
+        name: 'template',
         title: {
-          en: 'Bundles'
-        }
-      }, {
-        name: 'services',
+          en: 'What is the pages template?'
+        },
+        if: 'type.pages',
+        type: 'input'
+      },
+      {
+        name: 'script',
         title: {
-          en: 'Services'
-        }
-      }]
-    }
+          en: 'Select what scripts to generate:'
+        },
+        if: 'type.scripts',
+        type: 'checkboxes',
+        values: [
+          {
+            name: 'bundles',
+            title: {
+              en: 'Bundles'
+            }
+          },
+          {
+            name: 'services',
+            title: {
+              en: 'Services'
+            }
+          }
+        ]
+      }
     ]
   };
-
 };

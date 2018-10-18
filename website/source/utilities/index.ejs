@@ -1,0 +1,19 @@
+<%
+
+var builtin = [];
+var project = [];
+for(var utility of site.utilities){
+  if(utility.builtin){
+    builtin.push(utility);
+    continue;
+  }
+  project.push(utility);
+}
+
+  %>
+<div class="frame"
+  layout="column"
+  layout-padding>
+  <%-template('./group',{title:page.builtin,utilities:builtin})%>
+  <%-template('./group',{title:page.project,utilities:project})%>
+</div>
