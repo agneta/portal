@@ -4,7 +4,6 @@ Thumbs.db
 db.json
 versions.json
 *.log
-build/
 /temp
 public_dev/
 /tmp

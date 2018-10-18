@@ -148,8 +148,11 @@ module.exports = function(Model, app) {
           }
           pageData = _.extend({}, pageData, page.data);
 
-          if (pageData.path) {
-            pageData.path = template(pageData.path);
+          for (let key in pageData) {
+            let value = pageData[key];
+            if (_.isString(value)) {
+              pageData[key] = template(value);
+            }
           }
 
           if (page.viewData) {
