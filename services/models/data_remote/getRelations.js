@@ -2,7 +2,7 @@ const Promise = require('bluebird');
 const _ = require('lodash');
 
 module.exports = function(Model, app) {
-  const char = '$';
+  const char = '_';
 
   Model.getRelations = function(options) {
     let templateData = options.templateData;
@@ -65,7 +65,7 @@ module.exports = function(Model, app) {
         });
     }).then(function() {
       templateProps.map(function(templateProp) {
-        let sourceProp = templateProp.split('$').join('');
+        let sourceProp = templateProp.split(char).join('');
         let value = _.get(relations, sourceProp);
         if (!value) {
           return;

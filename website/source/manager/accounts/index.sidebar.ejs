@@ -47,7 +47,7 @@
     layout-align="start center">
     <span>Total: {{accounts.count||'...'}}</span>
     <span flex="auto"> </span>
-    <md-button ng-href="<%-get_path('manager/accounts/search')%>">
+    <md-button ng-href="<%-await get_path('manager/accounts/search')%>">
       Expand
     </md-button>
   </div>

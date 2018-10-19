@@ -2,16 +2,16 @@
   layout="column">
   <div layout="row"
     layout-xs="column">
-    <%-await template('ui/page-card',{data:get_page('edit/pages')})%>
+    <%-await template('ui/page-card',{data:await get_page('edit/pages')})%>
   </div>
   <div layout="row"
     layout-xs="column">
-    <%-await template('ui/page-card',{data:get_page('edit/media-public')})%>
-    <%-await template('ui/page-card',{data:get_page('edit/media-private')})%>
+    <%-await template('ui/page-card',{data:await get_page('edit/media-public')})%>
+    <%-await template('ui/page-card',{data:await get_page('edit/media-private')})%>
   </div>
   <div layout="row"
     layout-xs="column">
-    <%-await template('ui/page-card',{data:get_page('edit/data-local')})%>
-    <%-await template('ui/page-card',{data:get_page('edit/data-remote')})%>
+    <%-await template('ui/page-card',{data:await get_page('edit/data-local')})%>
+    <%-await template('ui/page-card',{data:await get_page('edit/data-remote')})%>
   </div>
 </div>

@@ -3,7 +3,7 @@ var data = locals.data;
 var item = _.extend({},data);
 var hasRole;
 if(item.page){
-  item = _.extend({},get_page(item.page),item);
+  item = _.extend({},await get_page(item.page),item);
 }
 var url = item.href_full;
 var itemAttr = '';
@@ -13,7 +13,7 @@ if(item.href_full){
 }
 
 if(!url && item.path){
-  url = get_path(item.path);
+  url = await get_path(item.path);
 }
 
 %>
@@ -63,7 +63,7 @@ if(!url && item.path){
             var optionClick = null;
 
             if(menuItem.page){
-              option = _.extend({},get_page(menuItem.page),option);
+              option = _.extend({},await get_page(menuItem.page),option);
             }
 
             if(option.href_full){
@@ -77,7 +77,7 @@ if(!url && item.path){
             }
 
             if(!optionURL){
-              optionURL = option.path && get_path(option);
+              optionURL = option.path && await get_path(option);
             }
 
             %>
@@ -104,10 +104,10 @@ if(!url && item.path){
 
           <%if(menuItem.menu){
                   for(var item of menuItem.menu){
-                    var page = get_page(item.page);
+                    var page = await get_page(item.page);
                     %>
           <md-button class="option-item md-raised"
-            ng-href="<%-get_path(page)%>">
+            ng-href="<%-await get_path(page)%>">
             <%-lng(item.title||page.title)%>
           </md-button>
           <%}%>
