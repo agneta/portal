@@ -1,10 +1,10 @@
 <div layout="column"
   class="editor-container">
-  <%-template('./toolbar')%>
+  <%-await template('./toolbar')%>
   <div ag-include
     class="page-main"
     ng-class="{active:page}"
     page="{{mode.page}}"></div>
 </div>
-<%-template('editor/messages')%>
-<%-template('editor/field-menu')%>
+<%-await template('editor/messages')%>
+<%-await template('editor/field-menu')%>

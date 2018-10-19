@@ -14,10 +14,10 @@
   class="media-explorer"
   layout="column">
 
-  <%-template('ui/explorer',{
+  <%-await template('ui/explorer',{
     toolbar: 'media/explorer/toolbar',
     item: 'media/explorer/item'
   })%>
 </md-dialog-content>
 
-<%-template('ui/loader')%>
+<%-await template('ui/loader')%>

@@ -6,7 +6,7 @@
 
     <div layout="row"
         layout-align="end">
-        <%-template('editor/expander')%>
+        <%-await template('editor/expander')%>
     </div>
 
     <div ng-repeat="field in template.fields"
@@ -17,13 +17,13 @@
         <div layout="row"
             class="header"
             layout-align="left center">
-            <%-template('editor/label',{model:'field.title||key'})%>
-            <%-template('editor/fields-inline')%>
-            <%-template('editor/expander',{if:"field.type=='array'"})%>
-            <%-template('editor/contributors')%>
+            <%-await template('editor/label',{model:'field.title||key'})%>
+            <%-await template('editor/fields-inline')%>
+            <%-await template('editor/expander',{if:"field.type=='array'"})%>
+            <%-await template('editor/contributors')%>
         </div>
 
-        <%-template('editor/fields-standard',{attr:'class="data-field page-field-cont"'})%>
+        <%-await template('editor/fields-standard',{attr:'class="data-field page-field-cont"'})%>
 
     </div>
     <div layout="row">

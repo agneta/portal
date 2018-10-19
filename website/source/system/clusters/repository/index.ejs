@@ -24,7 +24,7 @@
     layout="row"
     layout-margin
     layout-align="start center">
-    <%-template('./commit')%>
+    <%-await template('./commit')%>
   </div>
   <span ng-if="graph.behind>graph.shortLog.length+1"
     class="rest">...</span>
@@ -34,7 +34,7 @@
     layout="row"
     layout-margin
     layout-align="start center">
-    <%-template('./commit')%>
+    <%-await template('./commit')%>
   </div>
 </div>
 

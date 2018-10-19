@@ -7,17 +7,17 @@
 
       <div class="header box ag-margin"
         layout="column">
-        <%-template('dialog/email-compose/address',page.field.to)%>
-          <%-template('dialog/email-compose/field',page.field.subject)%>
+        <%-await template('dialog/email-compose/address',page.field.to)%>
+        <%-await template('dialog/email-compose/field',page.field.subject)%>
       </div>
 
       <div class="field message">
-        <%-template('ui/text-editor',{
+        <%-await template('ui/text-editor',{
         model: 'message'
       })%>
       </div>
 
-      <%-template('./attachments')%>
+      <%-await template('./attachments')%>
 
     </div>
 
@@ -33,4 +33,4 @@
 
 </div>
 
-<%-template('ui/loader')%>
+<%-await template('ui/loader')%>

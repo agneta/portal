@@ -1,5 +1,10 @@
-<div class="error" ng-hide="files.length" layout="column" layout-margin layout-align="center">
-    <md-icon class="md-warn" md-svg-src="<%-get_icon('material/error-outline')%>"></md-icon>
+<div class="error"
+    ng-hide="files.length"
+    layout="column"
+    layout-margin
+    layout-align="center">
+    <md-icon class="md-warn"
+        md-svg-src="<%-get_icon('material/error-outline')%>"></md-icon>
     <p>
         <%-lng(page.noChanges)%>
     </p>
@@ -11,11 +16,17 @@
     </p>
 
     <md-list class="status">
-        <md-list-item class="file" ng-repeat="file in files" layout="row" layout-align="start center">
+        <md-list-item class="file"
+            ng-repeat="file in files"
+            layout="row"
+            layout-align="start center">
             <span>{{file.path}}</span>
             <span flex="auto"></span>
-            <div layout="row" layout-align="start center">
-                <div class="entry" ng-repeat="entry in file.status" ng-style="{background:entry.color}">
+            <div layout="row"
+                layout-align="start center">
+                <div class="entry"
+                    ng-repeat="entry in file.status"
+                    ng-style="{background:entry.color}">
                     <md-tooltip md-direction="top">{{entry.title}}</md-tooltip>
                     <span>{{entry.code}}</span>
                 </div>
@@ -23,5 +34,5 @@
         </md-list-item>
     </md-list>
 
-    <%-template('form',{form:page.form})%>
+    <%-await template('form',{form:page.form})%>
 </div>

@@ -6,9 +6,9 @@
     ng-repeat="parameter in parameters"
     ng-if="checkCondition(parameter)">
     <p class="title">{{parameter.title}}</p>
-    <%-template('./select')%>
-    <%-template('./checkboxes')%>
-    <%-template('./radio')%>
-    <%-template('./input')%>
+    <%-await template('./select')%>
+    <%-await template('./checkboxes')%>
+    <%-await template('./radio')%>
+    <%-await template('./input')%>
   </div>
 </div>

@@ -6,8 +6,10 @@
     </div>
     <span flex></span>
     <p>{{fromNow}}</p>
-    <md-button class="md-icon-button" ng-click="close()">
-      <md-icon md-svg-src="<%-get_icon('material/close')%>" aria-label="Cancel"></md-icon>
+    <md-button class="md-icon-button"
+      ng-click="close()">
+      <md-icon md-svg-src="<%-get_icon('material/close')%>"
+        aria-label="Cancel"></md-icon>
     </md-button>
   </div>
 </md-toolbar>
@@ -16,9 +18,11 @@
 
   <md-list>
     <div ng-repeat="activity in data.activities | orderBy:'-time'">
-      <md-list-item ng-click="loadActivity(activity)" layout="row">
+      <md-list-item ng-click="loadActivity(activity)"
+        layout="row">
 
-        <div class="md-list-item-text" layout="column">
+        <div class="md-list-item-text"
+          layout="column">
           <div class="header">
             <p class="title">
               {{activity.title}}
@@ -34,12 +38,16 @@
 
         <span flex="auto"></span>
 
-        <md-button aria-label="modal" class="md-icon-button" ng-if="activity.modal" ng-click="modal(activity)">
+        <md-button aria-label="modal"
+          class="md-icon-button"
+          ng-if="activity.modal"
+          ng-click="modal(activity)">
           <md-icon md-svg-src="<%-get_icon('material/visibility')%>">
           </md-icon>
         </md-button>
 
-        <div class="md-list-item-text date" layout="column">
+        <div class="md-list-item-text date"
+          layout="column">
           <p am-time-ago="activity.time | amUtc | amLocal"></p>
           <p>{{activity.time | amUtc | amLocal | amDateFormat:'HH:mm:ss'}}</p>
         </div>
@@ -50,11 +58,12 @@
     </div>
   </md-list>
 
-  <%-template('ui/loader')%>
+  <%-await template('ui/loader')%>
 
 </md-content>
 
-<md-dialog-actions layout="row" md-whiteframe="2">
+<md-dialog-actions layout="row"
+  md-whiteframe="2">
   <span flex> </span>
   <md-button ng-click="close()">
     <%-lng('general.close')%>

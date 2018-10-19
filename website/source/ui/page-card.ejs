@@ -19,29 +19,40 @@ if(!url && item.path){
 %>
 
 
-<div flex="100" class="page-card" class="page-card" layout="column">
-  <%-template('ui/has-role',{authorization:item.authorization})%>
-  <div flex="100" class="container" layout="column">
+<div flex="100"
+  class="page-card"
+  class="page-card"
+  layout="column">
+  <%-await template('ui/has-role',{authorization:item.authorization})%>
+  <div flex="100"
+    class="container"
+    layout="column">
 
-    <div class="header" layout="row">
+    <div class="header"
+      layout="row">
       <%if(item.icon){%>
-        <div>
-        <md-icon aria-label="<%-lng(item.title)%>" class="card-icon" md-svg-src="<%-get_icon(item.icon)%>">
+      <div>
+        <md-icon aria-label="<%-lng(item.title)%>"
+          class="card-icon"
+          md-svg-src="<%-get_icon(item.icon)%>">
         </md-icon>
-        </div>
-        <%}%>
-
-        <div layout="column">
-          <a <%-itemAttr%> ng-href="<%-url%>">
-            <span class="md-headline"><%-lng(item.title)%></span>
-          </a>
-          <span class="md-subhead"><%-lng(item.description)%></span>
-        </div>
-
       </div>
-      <div layout="column">
+      <%}%>
 
-        <%
+      <div layout="column">
+        <a <%-itemAttr%> ng-href="
+          <%-url%>">
+          <span class="md-headline">
+            <%-lng(item.title)%></span>
+        </a>
+        <span class="md-subhead">
+          <%-lng(item.description)%></span>
+      </div>
+
+    </div>
+    <div layout="column">
+
+      <%
         if(item.menu){
 
           for(var menuItem of item.menu){
@@ -70,52 +81,60 @@ if(!url && item.path){
             }
 
             %>
-            <div class="menu">
+      <div class="menu">
 
-              <a
-              layout="row"
-              layout-align="start center"
-              layout-margin
-              class="ag-list-item"
-              <%-optionAttr%>
-              <%-optionClick%>
-              ng-href="<%-optionURL%>"
-              >
+        <a layout="row"
+          layout-align="start center"
+          layout-margin
+          class="ag-list-item"
+          <%-optionAttr%>
+          <%-optionClick%>
+          ng-href="
+          <%-optionURL%>"
+          >
 
-              <%-template('ui/has-role',{authorization:option.authorization})%>
+          <%-await template('ui/has-role',{authorization:option.authorization})%>
 
-              <%if(option.icon){%>
-                <md-icon md-svg-src="<%-get_icon(option.icon)%>"></md-icon>
-                <%}%>
+          <%if(option.icon){%>
+          <md-icon md-svg-src="<%-get_icon(option.icon)%>"></md-icon>
+          <%}%>
 
-                <span flex="auto"><%-lng(option.title)%></span>
+          <span flex="auto">
+            <%-lng(option.title)%></span>
 
-                <%if(menuItem.menu){
+          <%if(menuItem.menu){
                   for(var item of menuItem.menu){
                     var page = get_page(item.page);
                     %>
-                    <md-button class="option-item md-raised" ng-href="<%-get_path(page)%>"><%-lng(item.title||page.title)%></md-button>
-                <%}%>
-                <%}%>
+          <md-button class="option-item md-raised"
+            ng-href="<%-get_path(page)%>">
+            <%-lng(item.title||page.title)%>
+          </md-button>
+          <%}%>
+          <%}%>
 
-                </a>
+        </a>
 
-                  </div>
+      </div>
 
-                  <%}}%>
-                </div>
+      <%}}%>
+    </div>
 
-                <span flex="auto"></span>
+    <span flex="auto"></span>
 
-                <%if(url){%>
-                <div layout="row" layout-align="end center">
-                  <md-button class="md-primary" <%-itemAttr%> ng-href="<%-url%>" >
-                    <md-icon aria-label="more" md-svg-src="<%-get_icon('material/add')%>">
-                    </md-icon>
-                    <span>More</span>
-                  </md-button>
-                </div>
-                <%}%>
+    <%if(url){%>
+    <div layout="row"
+      layout-align="end center">
+      <md-button class="md-primary"
+        <%-itemAttr%> ng-href="
+        <%-url%>" >
+        <md-icon aria-label="more"
+          md-svg-src="<%-get_icon('material/add')%>">
+        </md-icon>
+        <span>More</span>
+      </md-button>
+    </div>
+    <%}%>
 
-              </div>
-            </div>
+  </div>
+</div>

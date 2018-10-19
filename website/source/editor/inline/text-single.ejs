@@ -1,7 +1,8 @@
 <md-input-container class="type-inline">
     <label></label>
     <input spellcheck="true"
-        <%-template('editor/validators')%>
+        <%-await
+        template('editor/validators')%>
         aria-label="{{field.name}}"
         ng-model="data.__value[edit.lang]"
         ng-keypress="onFieldChange(data)"

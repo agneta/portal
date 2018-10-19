@@ -1,11 +1,11 @@
 <div class="frame top ag-margin"
   layout="column">
-  <%-template('ui/page-title')%>
+  <%-await template('ui/page-title')%>
 
   <div class="toolbar ag-margin md-padding"
     layout="row"
     layout-align="start end">
-    <%-template('./parameter')%>
+    <%-await template('./parameter')%>
     <span flex="auto"></span>
     <p ng-show="status.running">Running...</p>
     <md-button ng-show="!status.running"
@@ -19,8 +19,8 @@
     <div flex="100"
       layout="column"
       md-whiteframe="2">
-      <%-template('./log')%>
-      <%-template('./progress')%>
+      <%-await template('./log')%>
+      <%-await template('./progress')%>
     </div>
   </div>
 

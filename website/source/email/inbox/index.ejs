@@ -39,9 +39,9 @@
 
     <div class="box ag-margin"
       layout="column">
-      <%-template('./address',page.address.from)%>
-        <%-template('./address',page.address.to)%>
-          <%-template('./address',page.address.cc)%>
+      <%-await template('./address',page.address.from)%>
+      <%-await template('./address',page.address.to)%>
+      <%-await template('./address',page.address.cc)%>
     </div>
     <div class="box email-content">
       <iframe srcdoc="{{ email.data.html}}"

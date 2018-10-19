@@ -14,6 +14,6 @@ for(var utility of site.utilities){
 <div class="frame"
   layout="column"
   layout-padding>
-  <%-template('./group',{title:page.builtin,utilities:builtin})%>
-  <%-template('./group',{title:page.project,utilities:project})%>
+  <%-await template('./group',{title:page.builtin,utilities:builtin})%>
+  <%-await template('./group',{title:page.project,utilities:project})%>
 </div>

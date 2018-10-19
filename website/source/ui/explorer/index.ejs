@@ -2,19 +2,19 @@
     layout="column"
     class="ui-explorer">
     <%if(locals.toolbar){%>
-    <%-template(locals.toolbar)%>
+    <%-await template(locals.toolbar)%>
     <%}%>
 
     <div ng-hide="isSearching || searchResults"
         flex="100"
         layout="column">
-        <%-template('ui/loader')%>
-        <%-template('./directory',{
+        <%-await template('ui/loader')%>
+        <%-await template('./directory',{
                 item: locals.item,
                 sizes: 'md-cols="2" md-cols-sm="4" md-cols-md="6" md-cols-gt-md="8" md-cols-gt-lg="10" md-cols-gt-xl="12"'
               })%>
     </div>
 
-    <%-template('./search-results')%>
-    <%-template('./footer')%>
+    <%-await template('./search-results')%>
+    <%-await template('./footer')%>
 </div>

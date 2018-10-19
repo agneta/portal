@@ -4,15 +4,19 @@
     <h2>{{title}}</h2>
     <span flex></span>
     <p am-time-ago="time"></p>
-    <md-button class="md-icon-button" ng-click="close()">
-      <md-icon md-svg-src="<%-get_icon('material/close')%>" aria-label="Cancel"></md-icon>
+    <md-button class="md-icon-button"
+      ng-click="close()">
+      <md-icon md-svg-src="<%-get_icon('material/close')%>"
+        aria-label="Cancel"></md-icon>
     </md-button>
   </div>
 </md-toolbar>
 
 <md-content flex="auto">
 
-  <md-tabs class="md-primary" md-dynamic-height md-border-bottom>
+  <md-tabs class="md-primary"
+    md-dynamic-height
+    md-border-bottom>
 
     <md-tab label="Info">
       <md-content class="md-padding">
@@ -20,21 +24,26 @@
           <%
           for(var row of page.request){
             %>
-            <md-list-item class="entry" layout="row">
-              <md-icon md-svg-src="<%-get_icon(row.icon)%>" aria-label="Icon"></md-icon>
-              <div class="md-list-item-text first" layout="column">
-                <p class="title">
-                  <%-lng(row.title)%>
-                </p>
-              </div>
-              <span flex="" class="flex"></span>
-              <div class="md-list-item-text" layout="column">
-                <p>{{data.request.
-                  <%-row.name%>}}</p>
-              </div>
-            </md-list-item>
-            <md-divider></md-divider>
-            <%
+          <md-list-item class="entry"
+            layout="row">
+            <md-icon md-svg-src="<%-get_icon(row.icon)%>"
+              aria-label="Icon"></md-icon>
+            <div class="md-list-item-text first"
+              layout="column">
+              <p class="title">
+                <%-lng(row.title)%>
+              </p>
+            </div>
+            <span flex=""
+              class="flex"></span>
+            <div class="md-list-item-text"
+              layout="column">
+              <p>{{data.request.
+                <%-row.name%>}}</p>
+            </div>
+          </md-list-item>
+          <md-divider></md-divider>
+          <%
             }
             %>
         </div>
@@ -49,11 +58,12 @@
 
   </md-tabs>
 
-  <%-template('ui/loader')%>
+  <%-await template('ui/loader')%>
 
 </md-content>
 
-<md-dialog-actions layout="row" md-whiteframe="2">
+<md-dialog-actions layout="row"
+  md-whiteframe="2">
   <span flex></span>
   <md-button ng-click="close()">
     <%-lng('general.close')%>

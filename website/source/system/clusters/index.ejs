@@ -1,8 +1,8 @@
 <div class="frame"
   layout="column">
-  <%-template('ui/page-title')%>
-    <div class="details"
-      layout="column">
-      <%-template('ui/tabs',page.tabs)%>
-    </div>
+  <%-await template('ui/page-title')%>
+  <div class="details"
+    layout="column">
+    <%-await template('ui/tabs',page.tabs)%>
+  </div>
 </div>

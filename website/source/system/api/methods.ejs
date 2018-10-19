@@ -1,18 +1,21 @@
 <div layout="row">
 
-<div flex="50" class="methods" layout="column">
-  <div
-  class="ag-list-item"
-  ng-click="method.select(item)"
-  ng-class="{active:method.selected == item}"
-  ng-repeat="item in method.list">
-    {{item.path}}
+  <div flex="50"
+    class="methods"
+    layout="column">
+    <div class="ag-list-item"
+      ng-click="method.select(item)"
+      ng-class="{active:method.selected == item}"
+      ng-repeat="item in method.list">
+      {{item.path}}
+    </div>
   </div>
-</div>
 
-<div flex="50" class="method ag-margin" layout="column">
-  <%-template('system/api/data',{data:page.data.method})%>
-  <%-template('system/api/list',{data:page.data.accepts})%>
-</div>
+  <div flex="50"
+    class="method ag-margin"
+    layout="column">
+    <%-await template('system/api/data',{data:page.data.method})%>
+    <%-await template('system/api/list',{data:page.data.accepts})%>
+  </div>
 
 </div>

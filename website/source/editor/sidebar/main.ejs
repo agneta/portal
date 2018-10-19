@@ -1,5 +1,5 @@
 <%
 var tabs = get_data('edit/page').tabs;
 %>
-<%-template('ui/tabs',tabs)%>
-<%-template('ui/loader',{prop:'sidebar.loading'})%>
+<%-await template('ui/tabs',tabs)%>
+<%-await template('ui/loader',{prop:'sidebar.loading'})%>

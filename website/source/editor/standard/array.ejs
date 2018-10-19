@@ -10,18 +10,18 @@
       class="header highlight md-padding"
       layout="row"
       layout-align="start center">
-      <%-template('editor/label',{model:'childField.title',prefix:'{{$index+1}}.'})%>
-      <%-template('editor/fields-inline')%>
+      <%-await template('editor/label',{model:'childField.title',prefix:'{{$index+1}}.'})%>
+      <%-await template('editor/fields-inline')%>
 
       <div class="field-menu">
 
-        <%-template('editor/expander',{if:"childField.type == 'array'"})%>
-        <%-template('editor/contributors')%>
+        <%-await template('editor/expander',{if:"childField.type == 'array'"})%>
+        <%-await template('editor/contributors')%>
       </div>
 
     </div>
     <div ng-init="parent=data; parentField=field; field=childField; data=child">
-      <%-template('editor/fields-standard',{attr:'class="array-cont"'})%>
+      <%-await template('editor/fields-standard',{attr:'class="array-cont"'})%>
     </div>
   </div>
 

@@ -17,7 +17,7 @@
             ng-click="objectClick(object)"
             ng-mouseover="object.hovered = true"
             ng-mouseleave="object.hovered = false">
-            <%-template('ui/explorer/item',get_data('media').search)%>
+            <%-await template('ui/explorer/item',get_data('media').search)%>
         </div>
     </div>
 </div>

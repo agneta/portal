@@ -1,22 +1,24 @@
-
 <%
 var fields = get_data('edit/page').fields;
 for(var field of fields.standard){%>
-  <script type="text/ng-template" id="field-standard-<%-field%>.html">
+<script type="text/ng-template"
+  id="field-standard-<%-field%>.html">
     <div class="data-node" content-id="{{data.__id}}" ng-class="{readonly:field.readonly,contracted:data._expanded}">
-      <%-template('editor/standard/'+field)%>
+      <%-await template('editor/standard/'+field)%>
     </div>
   </script>
 <%}%>
 
 <%
 for(var field of fields.inline){%>
-  <script type="text/ng-template" id="field-inline-<%-field%>.html">
-      <%-template('editor/inline/'+field)%>
+<script type="text/ng-template"
+  id="field-inline-<%-field%>.html">
+      <%-await template('editor/inline/'+field)%>
   </script>
 <%}%>
 
-<script type="text/ng-template" id="data-messages.html">
+<script type="text/ng-template"
+  id="data-messages.html">
   <div ng-messages="dataForm[data.__id].$error" role="alert">
     <div ng-repeat="(name,validator) in field.validators" ng-message="{{name}}">
       This field is required

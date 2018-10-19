@@ -4,8 +4,10 @@
       <h2>{{activity.title}}</h2>
     </div>
     <span flex></span>
-    <md-button class="md-icon-button" ng-click="close()">
-      <md-icon md-svg-src="<%-get_icon('material/close')%>" aria-label="Cancel"></md-icon>
+    <md-button class="md-icon-button"
+      ng-click="close()">
+      <md-icon md-svg-src="<%-get_icon('material/close')%>"
+        aria-label="Cancel"></md-icon>
     </md-button>
   </div>
 </md-toolbar>
@@ -14,16 +16,22 @@
 
   <div class="time">
     <p class="date"> {{activity.time | amUtc | amLocal | amDateFormat:'DD MMMM YYYY HH:mm:ss'}}</p>
-    <p class="ago" am-time-ago="activity.time"></p>
+    <p class="ago"
+      am-time-ago="activity.time"></p>
   </div>
 
-  <div layout="column" class="fields">
-    <div ng-repeat="field in activity.data.fields" layout="row" class="field">
-      <span class="title" flex="30">{{field.title}}</span>
-      <span class="value" flex="70">{{field.value}}</span>
+  <div layout="column"
+    class="fields">
+    <div ng-repeat="field in activity.data.fields"
+      layout="row"
+      class="field">
+      <span class="title"
+        flex="30">{{field.title}}</span>
+      <span class="value"
+        flex="70">{{field.value}}</span>
     </div>
   </div>
 
-  <%-template('ui/loader')%>
+  <%-await template('ui/loader')%>
 
 </md-content>

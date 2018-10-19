@@ -1,18 +1,25 @@
 <%
 var flex = box.flex||100;
 %>
-<div flex="<%-flex%>" class="box <%-box.name%>" <%-box.attr%>>
+<div flex="<%-flex%>"
+  class="box <%-box.name%>"
+  <%-box.attr%>>
 
-  <div class="header" layout="row" layout-align="start center">
+  <div class="header"
+    layout="row"
+    layout-align="start center">
     <%if(box.header){%>
-    <%-template(`system/server/${box.header}`)%>
+    <%-await template(`system/server/${box.header}`)%>
     <%}else{%>
-    <p class="title"><%-lng(box.title)%></p>
+    <p class="title">
+      <%-lng(box.title)%>
+    </p>
     <%}%>
   </div>
 
-  <div class="content" layout="column">
-    <%-template(`system/server/${box.name}`)%>
+  <div class="content"
+    layout="column">
+    <%-await template(`system/server/${box.name}`)%>
   </div>
 
 </div>
