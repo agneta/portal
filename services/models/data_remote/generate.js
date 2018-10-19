@@ -72,7 +72,7 @@ module.exports = function(Model, app) {
                 {
                   id: item.id
                 },
-                data
+                templateLocals
               ),
               page.viewData
             );
