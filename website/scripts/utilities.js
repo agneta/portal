@@ -18,22 +18,24 @@ var yaml = require('js-yaml');
 var fs = require('fs-extra');
 var path = require('path');
 var _ = require('lodash');
+var Promise = require('bluebird');
 
 module.exports = function(locals) {
-
   var project = locals.project;
   var utilities = {};
 
-  var baseDirs = [{
-    builtin: false,
-    dir: path.join(project.paths.core.project, 'utilities'),
-  }, {
-    builtin: true,
-    dir: path.join(project.paths.portal.website, 'utilities')
-  }];
+  var baseDirs = [
+    {
+      builtin: false,
+      dir: path.join(project.paths.core.project, 'utilities')
+    },
+    {
+      builtin: true,
+      dir: path.join(project.paths.portal.website, 'utilities')
+    }
+  ];
 
   baseDirs.forEach(function(options) {
-
     var baseDir = options.dir;
     if (!fs.existsSync(baseDir)) {
       return;
@@ -41,7 +43,6 @@ module.exports = function(locals) {
     var dirs = fs.readdirSync(baseDir);
 
     dirs.forEach(function(dir) {
-
       var utilPath = path.join(baseDir, dir);
       var stats = fs.statSync(utilPath);
 
@@ -53,9 +54,7 @@ module.exports = function(locals) {
       if (!fs.existsSync(configPath)) {
         return;
       }
-      var config = yaml.safeLoad(fs.readFileSync(configPath,
-        'utf8'
-      ));
+      var config = yaml.safeLoad(fs.readFileSync(configPath, 'utf8'));
 
       utilities[dir] = {
         name: dir,
@@ -69,32 +68,23 @@ module.exports = function(locals) {
 
   project.utilities = utilities;
 
-  var utilPages = [];
+  project.extend.generator.register('utilities', function(locals, onPage) {
+    return Promise.map(_.values(utilities), function(utility) {
+      let pageData = _.extend(
+        {
+          name: utility.name,
+          builtin: utility.builtin,
+          path: 'utilities/' + utility.name,
+          template: 'utility',
+          authorization: ['administrator'],
+          viewData: {
+            name: utility.name
+          }
+        },
+        utility.config
+      );
 
-  _.values(utilities)
-    .forEach(function(utility) {
-
-      var pageData = _.extend({
-        name: utility.name,
-        builtin: utility.builtin,
-        path: 'utilities/' + utility.name,
-        template: 'utility',
-        authorization: [
-          'administrator'
-        ],
-        viewData: {
-          name: utility.name
-        }
-      }, utility.config);
-
-      utilPages.push(pageData);
-
+      return onPage(pageData);
     });
-
-  project.site.utilities = utilPages;
-
-  project.extend.generator.register('utilities', function() {
-    return utilPages;
   });
-
 };

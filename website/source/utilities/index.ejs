@@ -2,7 +2,8 @@
 
 var builtin = [];
 var project = [];
-for(var utility of site.utilities){
+var utilities = await site.pages.find({where:{template:'utility'}});
+for(var utility of utilities){
   if(utility.builtin){
     builtin.push(utility);
     continue;

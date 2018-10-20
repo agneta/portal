@@ -1,0 +1,18 @@
+name: build
+builtin: true
+path: utilities/build
+template: utility
+authorization:
+  - administrator
+viewData:
+  name: build
+title:
+  en: Build
+  gr: Κατασκευή
+description:
+  en: >-
+    Build and generate assets, dependencies, services, and pages. The building
+    process also checks if a page has an error. After the building process, you
+    can see the website in live-mode
+icon: material/build
+generated: true

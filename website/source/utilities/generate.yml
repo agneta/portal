@@ -1,0 +1,15 @@
+name: generate
+builtin: true
+path: utilities/generate
+template: utility
+authorization:
+  - administrator
+viewData:
+  name: generate
+title:
+  en: Generate
+  gr: Δημιουργία
+description:
+  en: 'Generate dependencies, and services.'
+icon: material/library-add
+generated: true

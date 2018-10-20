@@ -1,0 +1,14 @@
+name: sync
+builtin: true
+path: utilities/sync
+template: utility
+authorization:
+  - administrator
+viewData:
+  name: sync
+title:
+  en: Sync
+description:
+  en: Synchronize your media and search data between sources.
+icon: material/sync
+generated: true

@@ -90,6 +90,7 @@ module.exports = function(Model, app) {
           var outputPath =
             path.join(webProject.paths.app.source, fileName) + '.yml';
 
+          content.generated = true;
           return fs.outputFile(outputPath, content);
         });
 

@@ -1,0 +1,13 @@
+name: sync-gardens
+builtin: false
+path: utilities/sync-gardens
+template: utility
+authorization:
+  - administrator
+viewData:
+  name: sync-gardens
+title:
+  en: Sync Gardens
+description:
+  en: Generate pages for gardens from remote data.
+generated: true
