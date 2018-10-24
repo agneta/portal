@@ -24,7 +24,7 @@ module.exports = function(app) {
 
   app.portal = app.portal || {};
 
-  app.portal.socket = app.socket.namespace({
+  app.portal.socket = app.socket.room({
     name: 'portal'
   });
 

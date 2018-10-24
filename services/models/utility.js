@@ -20,7 +20,7 @@ const _ = require('lodash');
 const util = require('util');
 
 module.exports = function(Model, app) {
-  Model.io = app.socket.namespace({
+  Model.io = app.socket.room({
     name: 'utilities',
     auth: {
       allow: ['administrator']

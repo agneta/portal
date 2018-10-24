@@ -25,7 +25,7 @@ module.exports = function(Model, app) {
     }
   };
 
-  Model.io = app.socket.namespace(mediaOptions);
+  Model.io = app.socket.room(mediaOptions);
 
   var web = app.web;
 
